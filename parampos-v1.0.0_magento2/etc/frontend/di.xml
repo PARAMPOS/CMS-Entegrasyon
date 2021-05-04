@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Config credit card-->
+    <type name="Magento\Payment\Model\CcGenericConfigProvider">
+        <arguments>
+            <argument name="methodCodes" xsi:type="array">
+                <item name="ccpp_creditcard" xsi:type="string">ccpp_creditcard</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Config iframe -->
+    <virtualType name="CcppIframeCcConfigProvider" type="Magento\Payment\Model\IframeConfigProvider">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">ccpp_creditcard</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="ccpp_iframe_cc_config_provider" xsi:type="object">CcppIframeCcConfigProvider</item>
+                <item name="ccpp_config" xsi:type="object">Param\CcppCreditCard\Model\CcppConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Cookie -->
+    <type name="Magento\Framework\View\Element\Js\Cookie">
+        <plugin name="afterGetPath"
+                type="Param\CcppCreditCard\Plugin\View\Element\Js\AdjustPath"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Framework\Session\Config">
+        <plugin name="add_samesite"
+                type="Param\CcppCreditCard\Plugin\Session\AddSameSite"
+                sortOrder="10"/>
+    </type>
+</config>

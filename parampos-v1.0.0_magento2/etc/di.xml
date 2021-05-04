@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="ParamCcppCreditCardConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">ccpp_creditcard</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppCreditCardConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">ParamCcppCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppCreditCardValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">ParamCcppCreditCardConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppCreditCardCountryValidator" type="Magento\Payment\Gateway\Validator\CountryValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">ParamCcppCreditCardConfig</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppCreditCardValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="country" xsi:type="string">ParamCcppCreditCardCountryValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">var/log/param.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppLogger" type="Monolog\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ParamCcppLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">ParamCcppLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParamCcppHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="captureTransaction" xsi:type="string">Param\CcppCreditCard\Gateway\Response\Handler\Capture\CaptureTransaction</item>
+                <item name="orderStatus" xsi:type="string">Param\CcppCreditCard\Gateway\Response\Handler\Capture\OrderStatus</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Param\CcppCreditCard\Gateway\Commands\CaptureCommand">
+        <arguments>
+            <argument name="validator" xsi:type="object">Param\CcppCreditCard\Gateway\Validator\ResponseValidator</argument>
+            <argument name="logger" xsi:type="object">ParamCcppLogger</argument>
+            <argument name="handler" xsi:type="object">ParamCcppHandler</argument>
+        </arguments>
+    </type>
+    <virtualType name="ParamCcppCreditCardCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">Param\CcppCreditCard\Gateway\Commands\InitializeCommand</item>
+                <item name="capture" xsi:type="string">Param\CcppCreditCard\Gateway\Commands\CaptureCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CcppCreditCardGateway" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="string">ccpp_creditcard</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Transparent\Info</argument>
+            <argument name="infoBlockType" xsi:type="string">Param\CcppCreditCard\Block\Payment\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">ParamCcppCreditCardValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">ParamCcppCreditCardValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">ParamCcppCreditCardCommandPool</argument>
+        </arguments>
+    </virtualType>
+    <type name="Param\CcppCreditCard\Controller\Process\Response">
+        <arguments>
+            <argument name="logger" xsi:type="object">ParamCcppLogger</argument>
+        </arguments>
+    </type>
+    <type name="Param\CcppCreditCard\Gateway\Response\Handler\Request\Transaction">
+        <arguments>
+            <argument name="logger" xsi:type="object">ParamCcppLogger</argument>
+        </arguments>
+    </type>
+    
+    <!-- Installment Fee -->
+    <preference for="Param\CcppCreditCard\Api\PaymentInformationManagementInterface"
+                type="Param\CcppCreditCard\Service\V1\PaymentInformationManagement"/>
+
+    <preference for="Param\CcppCreditCard\Api\GuestPaymentInformationManagementInterface"
+                type="Param\CcppCreditCard\Service\V1\GuestPaymentInformationManagement"/>
+    
+    <type name="Magento\Quote\Model\Quote\Address\ToOrder">
+        <plugin name="addInstallmentFeeToOrder" type="Param\CcppCreditCard\Plugin\Quote\InstallmentFeeToOrder"/>
+    </type>
+    
+    <type name="Magento\Sales\Block\Order\Totals">
+        <plugin name="addInstallmentTotal" type="Param\CcppCreditCard\Plugin\Order\AddInstallmentFeeToTotalsBlock"/>
+    </type>
+    
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="setInstallmentExtensionAfterLoad" type="Param\CcppCreditCard\Plugin\Order\LoadInstallmentFee"/>
+    </type>
+    
+    <type name="Magento\Sales\Model\OrderRepository">
+        <plugin name="getInstallmentExtensionBeforeSave" type="Param\CcppCreditCard\Plugin\Order\SaveInstallmentFee"/>
+    </type>
+
+    <type name="Magento\Sales\Model\ResourceModel\Order\Collection">
+        <plugin name="setInstallmentExtensionAfterLoad" type="Param\CcppCreditCard\Plugin\Order\LoadInstallmentFeeOnCollection"/>
+    </type>
+
+    <type name="Magento\CheckoutAgreements\Model\AgreementsValidator">
+        <plugin name="skipAgreementsValidation" type="Param\CcppCreditCard\Plugin\CheckoutAgreements\Model\AgreementsValidator" sortOrder="1" />
+    </type>
+
+    <type name="Magento\Payment\Model\Checks\TotalMinMax">
+        <plugin name="checkTotalMinMax" type="Param\CcppCreditCard\Plugin\Payment\Model\ChecksTotalMinMax" sortOrder="1" />
+    </type>
+    
+    <!-- Cookie -->
+    <preference for="Magento\Framework\Stdlib\CookieManagerInterface" type="Param\CcppCreditCard\Stdlib\Cookie\CookieManager"/>
+    <preference for="Magento\Framework\Stdlib\Cookie\PublicCookieMetadata" type="Param\CcppCreditCard\Rewrite\Stdlib\Cookie\PublicCookieMetadata"/>
+
+</config>

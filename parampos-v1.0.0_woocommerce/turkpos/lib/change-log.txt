@@ -1,0 +1,13 @@
+V 6.01
+* ADD PDF invoice display selection on config
+* FIX typing error "himzetini"
+* UPD product installments display nothing if rates not set
+
+V 6.03
+* FIX YKB lib break statement issues
+
+V 6.04 09/04/2018
+* ADD function PDF invoice display view 
+* FIX bootsrap error message display 
+* CHN localhost forbidden 
+* FIX typing errors 
