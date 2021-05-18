@@ -1,14 +1,10 @@
 <?php
-
-/* 
- */
-include_once (dirname(__FILE__).'/Eticconfig.php');
-include_once (dirname(__FILE__).'/Etictools.php');
-include_once (dirname(__FILE__).'/Eticgateway.php');
-include_once (dirname(__FILE__).'/Eticinstallment.php');
-include_once (dirname(__FILE__).'/Eticsql.php');
-include_once (dirname(__FILE__).'/Etictransaction.php');
-include_once (dirname(__FILE__).'/Eticstats.php');
-include_once (dirname(__FILE__).'/EticUi.php');
-include_once (dirname(__FILE__).'/EticUiWoo.php');
+include_once (dirname(__FILE__).'/Paramconfig.php');
+include_once (dirname(__FILE__).'/ParamTools.php');
+include_once (dirname(__FILE__).'/ParamGateway.php');
+include_once (dirname(__FILE__).'/ParamInstallment.php');
+include_once (dirname(__FILE__).'/ParamQuery.php');
+include_once (dirname(__FILE__).'/ParamTransaction.php');
+include_once (dirname(__FILE__).'/ParamUI.php');
+include_once (dirname(__FILE__).'/ParamWUI.php');
 include_once (dirname(__FILE__).'/../tool/SameSiteCookieSetter.php');

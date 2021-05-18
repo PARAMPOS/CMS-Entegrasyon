@@ -1,10 +1,10 @@
 <?php
 /**
  * Update
- * @author Mahmut GÜLERCE <info@eticsoft.com>
+ * @author Mahmut GÜLERCE
  * @version 1.1.1
  * Date: 31.03.2020
-/**
+ *
  * @author Original Author Ovunc Tukenmez <ovunct@live.com>
  * https://github.com/ovunctukenmez/SameSiteCookieSetter
  *

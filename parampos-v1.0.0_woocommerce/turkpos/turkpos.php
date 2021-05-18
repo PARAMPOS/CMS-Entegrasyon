@@ -97,7 +97,7 @@ function param_init_gateway_class() {
 			// You can also register a webhook here
 			//add_action('woocommerce_api_param', array( $this, 'webhook') );
 			add_action('woocommerce_receipt_' . $this->id, array($this, 'payment_response'));
-			$lib_class_path = dirname(__FILE__) . '/lib/gateways/turkpos/Eticsoft_turkpos.php';
+			$lib_class_path = dirname(__FILE__) . '/lib/gateways/turkpos/Param_Pos.php';
 			include_once($lib_class_path);
  		}
  
@@ -109,7 +109,7 @@ function param_init_gateway_class() {
 			$this->form_fields = array(
 				'enabled' => array(
 					'title'       => 'Enable/Disable',
-					'label'       => 'Enable Param POS',
+					'label'       => 'Param POS Aktif',
 					'type'        => 'checkbox',
 					'description' => '',
 					'default'     => 'no'
@@ -118,7 +118,7 @@ function param_init_gateway_class() {
 					'title'       => 'Param POS',
 					'type'        => 'text',
 					'description' => 'This controls the title which the user sees during checkout.',
-					'default'     => 'Credit Card',
+					'default'     => 'Kredi Kartı ile Öde',
 					'desc_tip'    => true,
 				),
 				'description' => array(
@@ -129,7 +129,7 @@ function param_init_gateway_class() {
 				),
 				'testmode' => array(
 					'title'       => 'Test mode',
-					'label'       => 'Enable Test Mode',
+					'label'       => 'Test Mode Aktif',
 					'type'        => 'checkbox',
 					'description' => 'Place the payment gateway in test mode using test API keys.',
 					'default'     => 'yes',
@@ -151,7 +151,7 @@ function param_init_gateway_class() {
 					'default'     => 'Test',
 				),
 				'guid' => array(
-					'title'       => 'GUID (Anahtar)',
+					'title'       => 'Client Password',
 					'type'        => 'text',
 					'default'     => '0c13d406-873b-403b-9c09-a5766840d98c',
 				),
@@ -193,7 +193,7 @@ function param_init_gateway_class() {
 		 */
 		public function payment_response($orderId)
 		{
-			$transaction = new EticTransaction();
+			$transaction = new ParamTransaction();
 			$result = $transaction->validateTransactionResponse($orderId, $_POST);
 			if($result['error']) {
 				wc_add_notice($result['message'], 'error' );
@@ -238,23 +238,23 @@ function param_init_gateway_class() {
 			echo '<div class="card-wrapper"></div>
 			
 			<p class="form-row form-row-wide" id="cc_name_field">
-				<label for="cc_name" class="">Full name (on the card)&nbsp;<abbr class="required" title="required">*</abbr></label>
+				<label for="cc_name" class="">Kart Sahibi Adı Soyadı&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text " name="cc_name" id="ccpp_creditcard_name_on_card" placeholder="Full name (on the card)" value="" autocomplate="off">
+					<input type="text" class="input-text " name="cc_name" id="ccpp_creditcard_name_on_card" placeholder="Kart Sahibi Adı Soyadı" value="" autocomplate="off">
 				</span>
 			</p>
 
 			<p class="form-row form-row-wide" id="cc_number_field">
-				<label for="cc_number" class="">Card number&nbsp;<abbr class="required" title="required">*</abbr></label>
+				<label for="cc_number" class="">Kredi Kartı Numarası&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="tel" class="input-text" name="cc_number" id="ccpp_creditcard_cc_number" placeholder="Card number" value="" autocomplete="off">
+					<input type="tel" class="input-text" name="cc_number" id="ccpp_creditcard_cc_number" placeholder="Kredi Kartı Numarası" value="" autocomplete="off">
 				</span>
 			</p>
 
 			<p class="form-row form-row-first" id="cc_expiry_field">
-				<label for="cc_expiry" class="">Expiration&nbsp;<abbr class="required" title="required">*</abbr></label>
+				<label for="cc_expiry" class="">SKT&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="MM/YYYY" value="" autocomplete="off">
+					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YYYY" value="" autocomplete="off">
 				</span>
 			</p>
 
@@ -269,7 +269,7 @@ function param_init_gateway_class() {
 				<label for="cc_installment" class="">Installment&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
 					<select name="cc_installment" class="form-control" id ="ccpp_creditcard_cc_installment">
-						<option value="">-- Please Select --</option>
+						<option value="">-- Lütfen Seçiniz --</option>
 					</select>
 				</span>
 				'.$installmentHtml.'
@@ -337,19 +337,19 @@ function param_init_gateway_class() {
 		{
 		
 			if( empty( $_POST[ 'cc_number' ]) ) {
-				wc_add_notice('<strong>Credit Card number</strong> missing!', 'error' );
+				wc_add_notice('<strong>Kredi Kart numarası</strong> eksik!', 'error' );
 				return false;
 			}
 			if( empty( $_POST[ 'cc_name' ]) ) {
-				wc_add_notice('<strong>Credit Card holder name</strong> missing!', 'error' );
+				wc_add_notice('<strong>Kredi Kartı Ad Soyad</strong> eksik!', 'error' );
 				return false;
 			}
 			if( empty( $_POST[ 'cc_expiry' ]) ) {
-				wc_add_notice('<strong>Expiry date</strong> missing!', 'error' );
+				wc_add_notice('<strong>Son kullanma tarihi</strong> eksik!', 'error' );
 				return false;
 			}
 			if( empty( $_POST['cc_cvv']) ) {
-				wc_add_notice('<strong>CVV number</strong> missing!', 'error' );
+				wc_add_notice('<strong>CVV numarası</strong> eksik!', 'error' );
 				return false;
 			}
 			return true;
@@ -371,10 +371,10 @@ function param_init_gateway_class() {
 			}
 			
 			$error_message = false;
-			$transaction = EticTransaction::createTransaction();
+			$transaction = ParamTransaction::createTransaction();
 			$status = $order->get_status();
 			$cur_name = get_woocommerce_currency();
-			$currency = Etictools::getCurrency($cur_name);
+			$currency = ParamTools::getCurrency($cur_name);
 			$mp = false;
 			
 			$transaction->id_order = $order_id;
@@ -394,7 +394,7 @@ function param_init_gateway_class() {
 				return;
 			}
 			
-			$lib = New EticSoft_turkpos();
+			$lib = new Param_Pos();
 			$transaction = $lib->pay($transaction);
 			$transaction->save();
 			
@@ -421,12 +421,12 @@ function param_init_gateway_class() {
  * @return void
  */
 function order_complate( $orderId ) {
-	$resp = Etictools::getValue('paramres');
+	$resp = ParamTools::getValue('paramres');
 	$order = new WC_Order($orderId);
-	$transaction = new EticTransaction();
+	$transaction = new ParamTransaction();
 	$result = $transaction->validateTransactionResponse($orderId, $_POST);
 	if($resp === 'success' && !$result['error']){
-		$tr = new EticTransaction();
+		$tr = new ParamTransaction();
 		$orderTransaction = $tr->getById($_POST['TURKPOS_RETVAL_Islem_ID']);
 		$amount = $orderTransaction['total_pay'] - $orderTransaction['total_cart'];
 		/*
@@ -453,10 +453,10 @@ function order_complate( $orderId ) {
  */
 function param_pos_order_details($orderId)
 {
-	if (!$tra = EticSql::getRow('spr_transaction', 'id_order', $orderId))
+	if (!$tra = ParamQuery::getRow('spr_transaction', 'id_order', $orderId))
 		return false;
-	$tr = New EticTransaction($tra['id_transaction']);
-	$ui = New EticUiWoo();
+	$tr = New ParamTransaction($tra['id_transaction']);
+	$ui = New ParamWUI();
 	echo $ui->displayAdminOrder($tr);
 }
 
@@ -652,6 +652,7 @@ function get_bank_installments() {
 			$bin_response = $bin->parse();
 			$posId = $bin_response["posId"];  
 			//$posId = 1013;
+			
 			$cc = new param\GetInstallmentPlanForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
 			$cc->send();
 			$response = $cc->parse(); 
