@@ -151,7 +151,7 @@ function param_init_gateway_class() {
 					'default'     => 'Test',
 				),
 				'guid' => array(
-					'title'       => 'Client Password',
+					'title'       => 'GUID',
 					'type'        => 'text',
 					'default'     => '0c13d406-873b-403b-9c09-a5766840d98c',
 				),
