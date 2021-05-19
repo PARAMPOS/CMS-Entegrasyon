@@ -1,5 +1,5 @@
 <?php
-include_once (dirname(__FILE__).'/Paramconfig.php');
+include_once (dirname(__FILE__).'/ParamConfig.php');
 include_once (dirname(__FILE__).'/ParamTools.php');
 include_once (dirname(__FILE__).'/ParamGateway.php');
 include_once (dirname(__FILE__).'/ParamInstallment.php');
