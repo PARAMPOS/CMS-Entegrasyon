@@ -13,7 +13,7 @@
  * setcookie signature which comes with php 7.3.0 is used (even if the server's php version is lower)
  */
 
-class SameSiteCookieSetter
+class SameSiteCookieSetters
 {
     static private $_is_browser_compatible = array();
 

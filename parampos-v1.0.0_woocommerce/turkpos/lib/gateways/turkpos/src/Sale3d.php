@@ -82,6 +82,7 @@ class Sale3d extends Config
             $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$extraData5);
         $securityString = $this->clientCode.$this->guid.$installments.$total.$generalTotal.$orderId.$failUrl.$successURL;
         $shaString = new SHA2B64($securityString, $this->clientCode, $this->clientUsername, $this->clientPassword);
+        $saleObj->Islem_Guvenlik_Tip = '3D';
         $saleObj->Islem_Hash = $client->SHA2B64($shaString)->SHA2B64Result;
         $this->response = $client->Pos_Odeme($saleObj);
     }

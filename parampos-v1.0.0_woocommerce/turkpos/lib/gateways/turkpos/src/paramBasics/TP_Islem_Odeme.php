@@ -33,6 +33,7 @@ class TP_Islem_Odeme
     public $Data4;//Extra Space 4
     public $Data5;//Extra Space 5
     public $G;//control and security object
+    public $Islem_Guvenlik_Tip;
 
     /**
      * TP_Islem_Odeme constructor.
@@ -80,6 +81,7 @@ class TP_Islem_Odeme
         $this->Taksit= $taksit;
         $this->Islem_Tutar= $islemtutar;
         $this->Toplam_Tutar  = $toplamTutar;
+        $this->Islem_Guvenlik_Tip = '3D';
         $this->Islem_Hash = null;
         $this->Islem_ID = $islemid;
         $this->IPAdr = $ipAdr;

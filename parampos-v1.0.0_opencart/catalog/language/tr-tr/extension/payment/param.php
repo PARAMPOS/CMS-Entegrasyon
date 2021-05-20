@@ -1,4 +1,4 @@
-<?
+<?php
 
 $_['text_title'] = 'Param POS (Turkpos) ile Öde)';
 $_['text_credit_card'] = 'Kredi kartı detayları';
@@ -33,8 +33,7 @@ $_['text_type_help'] = '"Siparişi Onayla" yı tıkladıktan sonra şu adrese y�
 $_['text_transaction_failed'] = 'Üzgünüm, ödemeniz reddedildi.';
 
 // Help
-$_['help_cvv'] = 'Mastercard veya Visa için bu, kartınızın arkasındaki 
-damga alanındaki son üç basamaktır.';
+$_['help_cvv'] = 'Mastercard veya Visa için bu, kartınızın arkasındaki damga alanındaki son üç basamaktır.';
 $_['help_cvv_amex'] = 'American Express için, kartın önündeki dört rakamdır';
 
 // Validation Error codes
@@ -131,9 +130,7 @@ $_['text_card_message_V6130'] = 'Genel müşteri bilgisi hatası';
 $_['text_card_message_V6131'] = 'Genel gönderim bilgisi hatası';
 $_['text_card_message_V6132'] = 'İşlem çoktan tamamlandı veya iptal edildi, işleme izin verilmedi';
 $_['text_card_message_V6133'] = 'Ödeme Türü için Ödeme yapılamaz';
-$_['text_card_message_V6134'] = 'Çekme/ Geçersiz Kılma için Geçersiz Kimlik
-    Doğrulama
-    İşlem Kimliği';
+$_['text_card_message_V6134'] = 'Çekme/ Geçersiz Kılma için Geçersiz Kimlik Doğrulama İşlem Kimliği';
 $_['text_card_message_V6135'] = 'İade İşlenirken PayPal Hatası';
 $_['text_card_message_V6140'] = 'Satıcı hesabı askıya alındı';
 $_['text_card_message_V6141'] = 'Geçersiz PayPal hesabı detayları veya API imzası';
