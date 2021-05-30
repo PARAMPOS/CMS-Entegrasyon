@@ -611,7 +611,7 @@ function get_bank_installments() {
 			for($i = 1; $i <= $installmentIndex; $i++) {
 				$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
 				$rate = $obj[0]["MO_$prerate"];
-				if(!floatval($rate) || floatval($rate) < 0)
+				if(floatval($rate) < 0)
 					continue;
 				$subtotal = (float) $woocommerce->cart->total;
 				$amount = (float) (1 + ($rate / 100)) *  $subtotal;
@@ -655,7 +655,7 @@ function get_bank_installments() {
 			
 			$cc = new param\GetInstallmentPlanForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
 			$cc->send();
-			$response = $cc->parse(); 
+			$response = $cc->parse();
 			$installment = [];
 			foreach ($response as $key => $resp) {
 				if ($resp[0]["SanalPOS_ID"] == $posId) { 
@@ -663,7 +663,7 @@ function get_bank_installments() {
 					for($i = 1; $i <= $installmentIndex; $i++) {
 						$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
 						$rate = $resp[0]["MO_$prerate"];
-						if(!floatval($rate) || floatval($rate) < 0)
+						if(floatval($rate) < 0)
 							continue;
 						
 						$subtotal = (float) $woocommerce->cart->total;
