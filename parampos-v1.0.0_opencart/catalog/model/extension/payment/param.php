@@ -179,17 +179,16 @@ class ModelExtensionPaymentParam extends Model {
 		$request->GUID = $this->config->get('payment_param_guid');
 		
 		$quoteResponse = $this->getBinQuote($request);
-		$posId = 1023;
 		$installment = [];
 		if($quoteResponse){
 			foreach ($quoteResponse as $key => $resp) {
-				if ($resp[0]["SanalPOS_ID"] == $posId) { 
+				if ($resp[0]["SanalPOS_ID"] == $posId['posId']) { 
 					$installmentIndex = 12;
 					for($i = 1; $i <= $installmentIndex; $i++) {
 						$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
 						$rate = $resp[0]["MO_$prerate"];
-						if(!floatval($rate) || floatval($rate) < 0)
-							continue;
+						if(floatval($rate) < 0)
+					        continue;
 						
 						$amount = (float) (1 + ($rate / 100)) *  $amount;
 						$fee = (float) ($rate / 100) * $amount;
