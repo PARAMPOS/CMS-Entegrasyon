@@ -151,7 +151,7 @@ function param_init_gateway_class() {
 					'default'     => 'Test',
 				),
 				'guid' => array(
-					'title'       => 'Client Password',
+					'title'       => 'GUID',
 					'type'        => 'text',
 					'default'     => '0c13d406-873b-403b-9c09-a5766840d98c',
 				),
@@ -171,9 +171,9 @@ function param_init_gateway_class() {
 					'default'     => 'https://test-dmz.param.com.tr:4443/turkpos.ws/service_turkpos_test.asmx?wsdl',
 				),
 				'installment' => array(
-					'title'       => 'Installment',
+					'title'       => 'Taksit Seçimi',
 					'type'        => 'checkbox',
-					'description' => 'Show installment in checkout',
+					'description' => 'Ödeme yaparken taksitleri göster.',
 					'default'     => 'no'
 				),
 				'debug' => array(
