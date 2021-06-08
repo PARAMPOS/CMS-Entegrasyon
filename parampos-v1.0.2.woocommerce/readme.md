@@ -7,7 +7,7 @@
 # Yükleme
 ---------------
 * Zip dosyasını indirin.
-* Wocommerce Panelinizden eklentiler->yeni ekle kısmına basın.
+* Woocommerce Panelinizden eklentiler->yeni ekle kısmına basın.
 * Üst kısımda bulunan eklenti yükle butonuna basarak zip dosyasını yükleyin.
 * Plugini aktif hale getirin.
 * Wocommerce -> ayarlar -> ödemeler kısmında gerekli entegrasyon bilgilerini girin ve kurulumu tamamlayın.
