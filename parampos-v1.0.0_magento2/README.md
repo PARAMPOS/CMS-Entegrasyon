@@ -1,4 +1,4 @@
-# Param - WooCoommerce Ödeme Yöntemi
+# Param - Magento Ödeme Yöntemi
 ------------
 * Api Dökümantasyonu https://dev.param.com.tr
 
@@ -6,10 +6,11 @@
 
 # Yükleme
 ---------------
-* Zip dosyasını indirin.
-* Wocommerce Panelinizden eklentiler->yeni ekle kısmına basın.
-* Üst kısımda bulunan eklenti yükle butonuna basarak zip dosyasını yükleyin.
-* Plugini aktif hale getirin.
-* Wocommerce -> ayarlar -> ödemeler kısmında gerekli entegrasyon bilgilerini girin ve kurulumu tamamlayın.
-* <a href="https://dev.param.com.tr/tr/hazir-altyapi/woocommerce-plugin-kurulumu">Detaylı Kurulum Rehberi</a>
+* Magento admin paneline giriş yapıyoruz.
+* Stores / Configuration'a tıklıyoruz.
+* Sales sekmesine tıklıyoruz.
+* Sales sekmesi altında payment methods a tıklıyoruz.
+* Burada param pos sekmesini açıyoruz.
+* Param pos sekmesini aktif ediyoruz.
+* Param.com.tr üzerinden gerekli entegrasyon bilgilerini girerek aktif etme işlemini tamamlıyoruz.
 

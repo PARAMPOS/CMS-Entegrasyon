@@ -1,4 +1,4 @@
-# Param - WooCoommerce Ödeme Yöntemi
+# Param - Opencart Ödeme Yöntemi
 ------------
 * Api Dökümantasyonu https://dev.param.com.tr
 
