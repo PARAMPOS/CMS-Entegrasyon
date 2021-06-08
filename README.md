@@ -1,6 +1,14 @@
-Param.com.tr firmasına ait ödeme metodları <br><br>
-nopCommerce<br>
-Opencart<br>
-WooCommerce<br>
-Presta<br>
-Magento
+# Param - Ödeme Yöntemleri
+------------
+* Api Dökümantasyonu https://dev.param.com.tr
+
+
+# Pluginler
+---------------
+* Wordpress WooCommerce
+* Prestashop
+* NopeCommerce
+* Opencart
+* Prestashop
+
+
