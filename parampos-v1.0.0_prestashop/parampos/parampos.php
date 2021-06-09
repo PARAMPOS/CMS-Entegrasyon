@@ -151,7 +151,7 @@ class Parampos extends PaymentModule
                 'input' => array(
                     array(
                         'type' => (_PS_VERSION_ < '1.6' ? 'radio':'switch'),
-                        'label' => $this->l('Sandbox mode'),
+                        'label' => $this->l('Test Modu'),
                         'name' => 'sandbox',
                         'is_bool' => true,
                         'class' => 't',
@@ -192,14 +192,14 @@ class Parampos extends PaymentModule
                     ),
                     array(
                         'type' => 'select',
-                        'label' => $this->l('Payment method'),
+                        'label' => $this->l('Ödeme Yöntemi'),
                         'name' => 'paymentmethod',
                         'required' => true,
                         'options' => array(
                             'query' => array(
                                 array(
                                     'id_option' => 'transparent',
-                                    'name' => $this->l('Transparent Redirect'),
+                                    'name' => $this->l('Şeffaf Yönlendirme'),
                                 ),
                             ),
                             'id' => 'id_option',
@@ -208,7 +208,7 @@ class Parampos extends PaymentModule
                     ),
                     array(
                         'type' => 'checkbox',
-                        'label' => $this->l('Payment Types'),
+                        'label' => $this->l('Ödeme Tipleri'),
                         'name' => 'paymenttype',
                         'required' => true,
                         'values'  => array(
@@ -219,7 +219,7 @@ class Parampos extends PaymentModule
                     ),
                     array(
                         'type' => (_PS_VERSION_ < '1.6' ? 'radio':'switch'),
-                        'label' => $this->l('Enable Installment'),
+                        'label' => $this->l('Taksit Seçimi'),
                         'name' => 'installment',
                         'is_bool' => true,
                         'class' => 't',
@@ -414,7 +414,7 @@ class Parampos extends PaymentModule
 
         $paymentOption = new PrestaShop\PrestaShop\Core\Payment\PaymentOption();
 
-        $paymentOption->setCallToActionText($this->l('Pay by Card with Param POS'))
+        $paymentOption->setCallToActionText($this->l('Kredi kartı ile öde'))
             ->setForm($this->context->smarty->fetch('module:parampos/views/templates/front/payment_form.tpl'))
             ->setAdditionalInformation(
                 $this->context->smarty->fetch('module:parampos/views/templates/front/payment_infos.tpl')

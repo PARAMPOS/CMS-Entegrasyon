@@ -17,7 +17,7 @@
     {/if}
       
   <div class="form-group row">
-    <label for="PARAM_CARDNAME" class="col-md-3 form-control-label required">{l s='Card Holder Name' mod='parampos'}</label>
+    <label for="PARAM_CARDNAME" class="col-md-3 form-control-label required">{l s='Kart sahibi ad soyad' mod='parampos'}</label>
     <div class="col-md-6">
         <input type="text" class="form-control" name="PARAM_CARDNAME" id='PARAM_CARDNAME' size="30" autocomplete="cc-name" />
         <span id="paramcard_error" class="error_msg"></span>
@@ -25,7 +25,7 @@
   </div>
 
   <div class="form-group row">
-    <label for="PARAM_CARDNUMBER" class="col-md-3 form-control-label required">{l s='Card Number' mod='parampos'}</label>
+    <label for="PARAM_CARDNUMBER" class="col-md-3 form-control-label required">{l s='Kart Numarası' mod='parampos'}</label>
     <div class="col-md-6">
         <input type="text" class="form-control" name="PARAM_CARDNUMBER" id='PARAM_CARDNUMBER' autocomplete="cc-number" size="30" maxlength="19" pattern="\d*" />
         <span id="paramnumber_error" class="error_msg"></span>
@@ -33,7 +33,7 @@
   </div>
 
   <div class="form-group row">
-    <label for="PARAM_CARDEXPIRYMONTH" class="col-md-3 form-control-label required">{l s='Card Expiry' mod='parampos'}</label>
+    <label for="PARAM_CARDEXPIRYMONTH" class="col-md-3 form-control-label required">{l s='Son Kullanım Tarihi' mod='parampos'}</label>
     <div class="col-md-2">
         <select class="form-control form-control-select" id="PARAM_CARDEXPIRYMONTH" name="PARAM_CARDEXPIRYMONTH">
             {section name=date_m start=01 loop=13}
@@ -59,7 +59,7 @@
   </div>
 
   <div class="form-group row">
-    <label for="PARAM_CARDCVN" class="col-md-3 form-control-label required">{l s='Security Code (CVV/CVC)' mod='parampos'}</label>
+    <label for="PARAM_CARDCVN" class="col-md-3 form-control-label required">{l s='Güvenlik Kodu (CVV/CVC)' mod='parampos'}</label>
     <div class="col-md-6">
         <input class="form-control" type="text" name="PARAM_CARDCVN" id="PARAM_CARDCVN" size="4" maxlength="4" autocomplete="cc-csc" pattern="\d*" />
         <span id="paramcvn_error" class="error_msg"></span>
@@ -67,7 +67,7 @@
   </div>
   {if $installment == 1}
     <div class="form-group row hidden" id ="param_installment_field">
-        <label class="col-md-3 form-control-label" for="param-installment">{l s='Installment' mod='parampos'}</label>
+        <label class="col-md-3 form-control-label" for="param-installment">{l s='Taksit Seçimi' mod='parampos'}</label>
         <div class="col-md-6">
             <select name="PARAM_INSTALLMENT" id="PARAM_INSTALLMENT" class="form-control form-control-select">
                 <option value="">--Lütfen Seçiniz--</option>

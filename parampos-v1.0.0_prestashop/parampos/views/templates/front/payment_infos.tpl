@@ -5,5 +5,5 @@
 *}
 
 <section>
-  <p>{l s='Your payment will be securely processed with Param POS' mod='parampos'}</p>
+  <p>{l s='Ödemeniz Param ödeme yöntemi ile güvenle yapılmaktadır.' mod='parampos'}</p>
 </section>
