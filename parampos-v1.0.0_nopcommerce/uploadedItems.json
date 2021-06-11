@@ -1,9 +1,0 @@
-﻿[  
-  {
-    "Type": "Plugin",
-    "SupportedVersion": "4.40",
-    "DirectoryPath": "Param/nopCommerce 4.40/Payments.Param/",
-    "SystemName": "Payments.Param",
-    "SourceDirectoryPath": "Param/nopCommerce 4.40/Nop.Plugin.Payments.Param/"
-  }
-]
