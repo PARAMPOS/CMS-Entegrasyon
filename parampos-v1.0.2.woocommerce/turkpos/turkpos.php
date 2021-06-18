@@ -253,7 +253,7 @@ function param_init_gateway_class() {
 			<p class="form-row form-row-first" id="cc_expiry_field">
 				<label for="cc_expiry" class="">SKT&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YYYY" value="" autocomplete="off">
+					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YY" value="" autocomplete="off">
 				</span>
 			</p>
 
@@ -275,7 +275,7 @@ function param_init_gateway_class() {
 			</p>';
 			echo "<script>var card = new Card({ form: '.woocommerce-checkout', container: '.card-wrapper',formatting: true,placeholders: {
 				number: '•••• •••• •••• ••••',
-				name: 'Full Name',
+				name: 'Ad Soyad',
 				expiry: '••/••',
 				cvc: '•••'
 			},masks: {
