@@ -2,7 +2,10 @@
 ------------
 * Api Dökümantasyonu https://dev.param.com.tr
 
-
+# Gereksinimler
+---------------
+* Soap Modül sunucu yüklü durumda olmalıdır.
+* Sunucu ip adresiniz Param Panel entegrasyon bilgilerim kısmına eklenmek zorundadır.
 
 # Yükleme
 ---------------
