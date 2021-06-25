@@ -1,4 +1,4 @@
-# Param - Woocommerce Ödeme Yöntemi
+# Param - Prestashop Ödeme Yöntemi
 ------------
 * Api Dökümantasyonu https://dev.param.com.tr
 
