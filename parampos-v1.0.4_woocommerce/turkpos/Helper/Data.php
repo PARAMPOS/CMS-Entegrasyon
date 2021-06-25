@@ -38,7 +38,17 @@ class Data
      */
     public static function getCurrency($currency)
 	{
-		return (object) array(
+		$currencies = array(
+			'EUR' => array('Euro', '978'),
+			'TRY' => array('Türk Lirası', '949'),
+			'USD' => array('US Dollars', '840'),
+		);
+
+        if (isset($currencies[$currency])) {
+            $cur = $currencies[$currency];
+        }
+        
+        return (object) array(
             'name' => 'Türk Lirası',
             'iso_code' => "TRY",
             'iso_code_num' => 949,

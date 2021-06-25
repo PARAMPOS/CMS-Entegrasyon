@@ -86,6 +86,7 @@ function param_init_gateway_class() {
 			
 			$this->version = $this->get_option('version');
 			$this->installment = $this->get_option('installment');
+			$this->pos_rates = $this->get_option('pos_rates');
 			$this->debug = $this->get_option('debug');
 
 			// This action hook saves the settings
@@ -175,6 +176,16 @@ function param_init_gateway_class() {
 					'description' => 'Ödeme yaparken taksitleri göster.',
 					'default'     => 'no'
 				),
+				'pos_rates' => array(
+					'title' => 'Kullanıcak POS Oranları',
+					'description' => 'Kullanıcak POS Oranları',
+					'type' => 'select',
+					'default' => 'user',
+					'options' => array(
+						'user' => 'Kullanıcı Pos Oranları',
+						'merchant' => 'Firma Pos Oranları'
+					)
+				),
 				'debug' => array(
 					'title'       => 'Debug',
 					'type'        => 'checkbox',
@@ -253,7 +264,7 @@ function param_init_gateway_class() {
 			<p class="form-row form-row-first" id="cc_expiry_field">
 				<label for="cc_expiry" class="">SKT&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YY" value="" autocomplete="off">
+					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YYYY" value="" autocomplete="off">
 				</span>
 			</p>
 
@@ -265,7 +276,7 @@ function param_init_gateway_class() {
 			</p>
 			
 			<p class="form-row form-row-wide hidden" id="cc_installment_field">
-				<label for="cc_installment" class="">Installment&nbsp;<abbr class="required" title="required">*</abbr></label>
+				<label for="cc_installment" class="">Taksit Seçimi&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
 					<select name="cc_installment" class="form-control" id ="ccpp_creditcard_cc_installment">
 						<option value="">-- Lütfen Seçiniz --</option>
@@ -588,8 +599,15 @@ function get_bank_installments() {
 
 	// installment info table 
 	if( isset($_POST['show_installment']) && ! empty($_POST['show_installment']) ) {
-		$cc = new InstallmentForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
+		
+		if ( 'user' === $paramGateway->settings['pos_rates']) {
+			$cc = new InstallmentForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
+		} else {
+			$cc = new InstallmentForMerchant($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
+		}
+
 		$response = $cc->send()->fetchInstallment();
+		
 		$html = 
 		'<table id="installment-table" class="table table-hover">
 			<thead>
@@ -631,7 +649,7 @@ function get_bank_installments() {
 		echo $html;
 		die();
 	}
-	
+
 	// installment from BIN number 
     if( isset($_POST['fields']) && ! empty($_POST['fields']) ) {
 		$data = [];
@@ -646,7 +664,11 @@ function get_bank_installments() {
 			$bin_response = $bin->send($data['cc_number'])->fetchBIN();
 			$posId = $bin_response["posId"];  
 			
-			$cc = new InstallmentForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
+			if ( 'user' === $paramGateway->settings['pos_rates']) {
+				$cc = new InstallmentForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
+			} else {
+				$cc = new InstallmentForMerchant($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
+			}
 			$response = $cc->send()->fetchInstallment();
 			
 			$installment = [];

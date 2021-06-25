@@ -1,6 +1,6 @@
 <?php
 
-class InstallmentForUser extends Client
+class InstallmentForMerchant extends Client
 {
     private $response;
 
@@ -35,12 +35,12 @@ class InstallmentForUser extends Client
         
         $installmentsObj = new \stdClass();
         $installmentsObj->G = new \stdClass();
-        $installmentsObj->G->client_code  = $this->clientCode;
-        $installmentsObj->G->client_username = $this->clientUsername;
-        $installmentsObj->G->client_password = $this->clientPassword;
+        $installmentsObj->G->CLIENT_CODE  = $this->clientCode;
+        $installmentsObj->G->CLIENT_USERNAME = $this->clientUsername;
+        $installmentsObj->G->CLIENT_PASSWORD = $this->clientPassword;
         $installmentsObj->GUID = $this->guid;
         
-        $this->response = $client->TP_Ozel_Oran_SK_Liste($installmentsObj);
+        $this->response = $client->TP_Ozel_Oran_Liste($installmentsObj);
         
         return $this;
     }
@@ -52,14 +52,14 @@ class InstallmentForUser extends Client
     public function fetchInstallment()
     {
         $results = [];
-        if($this->response->TP_Ozel_Oran_SK_ListeResult < 0){
+        if($this->response->TP_Ozel_Oran_ListeResult < 0){
             return [
-                'Sonuc' => $this->response->TP_Ozel_Oran_SK_ListeResult->Sonuc,
-                'Sonuc_Str' => $this->response->TP_Ozel_Oran_SK_ListeResult->Sonuc_Str,
+                'Sonuc' => $this->response->TP_Ozel_Oran_ListeResult->Sonuc,
+                'Sonuc_Str' => $this->response->TP_Ozel_Oran_ListeResult->Sonuc_Str,
             ];
         }
 
-        $result = $this->response->TP_Ozel_Oran_SK_ListeResult;
+        $result = $this->response->TP_Ozel_Oran_ListeResult;
         $sonuc = $result->{'Sonuc'};
         $sonucStr = $result->{'Sonuc_Str'};
         if($sonuc <= 0){
