@@ -264,7 +264,7 @@ function param_init_gateway_class() {
 			<p class="form-row form-row-first" id="cc_expiry_field">
 				<label for="cc_expiry" class="">SKT&nbsp;<abbr class="required" title="required">*</abbr></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YYYY" value="" autocomplete="off">
+					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="AA/YY" value="" autocomplete="off">
 				</span>
 			</p>
 
@@ -284,7 +284,7 @@ function param_init_gateway_class() {
 				</span>
 				'.$installmentHtml.'
 			</p>';
-			echo "<script>var card = new Card({ form: '.woocommerce-checkout', container: '.card-wrapper',formatting: true,placeholders: {
+			echo "<script type='text/javascript'>var card = new Card({ form: '.woocommerce-checkout', container: '.card-wrapper',formatting: true,placeholders: {
 				number: '•••• •••• •••• ••••',
 				name: 'Ad Soyad',
 				expiry: '••/••',
@@ -321,7 +321,7 @@ function param_init_gateway_class() {
 				return;
 			}
 		
-			wp_enqueue_script('validation_lib_js', 'https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js');
+			wp_enqueue_script('validation_lib_js', '/turkpos/views/js/jquery.validate.min.js');
 			wp_enqueue_script('popup_lib_js', plugins_url() . '/turkpos/views/js/jquery.magnific-popup.min.js');
 			
 			wp_enqueue_script('jCard_js', plugins_url('/turkpos/views/js/card.js'));

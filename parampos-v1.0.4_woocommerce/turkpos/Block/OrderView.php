@@ -106,7 +106,7 @@ class OrderView
 				</h2>
 				<br/>
 					<a href="https://param.com.tr" target="_blank">
-						<img src="https://param.com.tr/images/param-logo-v3-mor.svg" width="180px"/>
+						<img src="/turkpos/views/images/param-logo-v3-mor.svg" width="180px"/>
 					</a> <br/>
 				<hr/>
 				<table class="wp-list-table widefat fixed striped posts">
