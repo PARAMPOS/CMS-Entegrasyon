@@ -1,3 +1,4 @@
+
 <?php
 /*
  * Plugin Name: Param POS Payment Gateway
@@ -5,7 +6,7 @@
  * Description: Take credit card payments on your store.
  * Author: Param POS
  * Author URI:
- * Version: 1.0.0
+ * Version: 1.0.4
  */
 ini_set("default_socket_timeout", 6000);
 
