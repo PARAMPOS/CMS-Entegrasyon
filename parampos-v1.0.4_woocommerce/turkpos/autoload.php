@@ -64,30 +64,21 @@ class Autoloader
      */
     public static function loader($className)
     {
-        $directory = new RecursiveDirectoryIterator(static::$pathTop, RecursiveDirectoryIterator::SKIP_DOTS);
+        $path = dirname(__FILE__);
+        include_once $path . '/Helper/Data.php';
+        include_once $path . '/Helper/Escaper.php';
+        
+        include_once $path . '/Block/OrderView.php';
 
-        if (is_null(static::$fileIterator)) {
-
-            static::$fileIterator = new RecursiveIteratorIterator($directory, RecursiveIteratorIterator::LEAVES_ONLY);
-
-        }
-
-        $filename = $className . static::$fileExt;
-
-        foreach (static::$fileIterator as $file) {
-
-            if (strtolower($file->getFilename()) === strtolower($filename)) {
-
-                if ($file->isReadable()) {
-                    include_once $file->getPathname();
-
-                }
-                break;
-
-            }
-
-        }
-
+        include_once $path . '/Model/Api/Client.php';
+        include_once $path . '/Model/Api/Pos_Odeme.php';
+        include_once $path . '/Model/Api/TP_Islem_Odeme_WD.php';
+        include_once $path . '/Model/Api/Bin.php';
+        include_once $path . '/Model/Api/Pay3d.php';
+        include_once $path . '/Model/Gateway/InitPOS.php';
+        include_once $path . '/Model/Gateway/Transaction.php';
+        include_once $path . '/Model/Gateway/InstallmentForMerchant.php';
+        include_once $path . '/Model/Gateway/InstallmentForUser.php';
     }
 
     /**
