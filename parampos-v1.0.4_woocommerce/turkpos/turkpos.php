@@ -1,4 +1,3 @@
-
 <?php
 /*
  * Plugin Name: Param POS Payment Gateway
