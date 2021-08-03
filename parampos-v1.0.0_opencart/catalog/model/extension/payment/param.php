@@ -189,9 +189,9 @@ class ModelExtensionPaymentParam extends Model {
 						$rate = $resp[0]["MO_$prerate"];
 						if(floatval($rate) < 0)
 					        continue;
-						
-						$amount = (float) (1 + ($rate / 100)) *  $amount;
-						$fee = (float) ($rate / 100) * $amount;
+
+                        $amount = (float) (1 + ($rate / 100)) *  $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
+                        $fee = (float) ($rate / 100) * $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
 						$installment[$i]['month'] = $prerate;
 						$installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
 						$installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $order_info['currency_code'];
