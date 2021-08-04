@@ -63,6 +63,7 @@ class ControllerExtensionPaymentParam extends Controller {
 
 	public function callback() {
 		$this->load->language('extension/payment/param');
+		
 		if (isset($this->request->get['AccessCode']) || isset($this->request->get['amp;AccessCode'])) {
 			$this->load->model('extension/payment/param');
 
@@ -142,8 +143,23 @@ class ControllerExtensionPaymentParam extends Controller {
 				$result->Data9 = '';
 				$result->Data10 = '';
 				//Dim Islem_Guvenlik_Str$ = CLIENT_CODE & GUID & Taksit & Islem_Tutar & Toplam_Tutar & Siparis_ID & Hata_URL & Basarili_URL
-				$Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID . $result->Taksit . $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
-				$response = $this->model_extension_payment_param->getPaymentRequest($result, $Islem_Guvenlik_Str);
+				switch ($order_info['currency_code']) {
+					case 'EUR':
+						$Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID . $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
+						$result->Doviz_Kodu = 1002;
+						$result->Islem_Guvenlik_Tip = '3D';
+						break;
+					case 'USD':
+						$Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID . $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
+						$result->Doviz_Kodu = 1001;
+						$result->Islem_Guvenlik_Tip = '3D';
+						break;
+					default:
+						$Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID . $result->Taksit . $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
+						$result->Doviz_Kodu = 1000;
+						break;
+				}
+				$response = $this->model_extension_payment_param->getPaymentRequest($result, $Islem_Guvenlik_Str, $order_info['currency_code']);
 			}
 		} elseif (isset($this->request->post['TURKPOS_RETVAL_Sonuc'])) 
 		{

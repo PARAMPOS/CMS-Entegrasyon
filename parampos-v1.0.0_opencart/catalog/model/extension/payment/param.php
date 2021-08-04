@@ -142,7 +142,40 @@ class ModelExtensionPaymentParam extends Model {
      * Generate Paymnet Request
      * @return string
      */
-    public function getPaymentRequest($result, $secureString) 
+    public function getPaymentRequest($result, $secureString, $currencyCode) 
+	{
+		try {
+			$client = $this->_createSoapClient($this->getApiUrl(), 0);
+			$response = $client->SHA2B64(array('Data' => $secureString));
+			$result->Islem_Hash = $response->SHA2B64Result;
+			if($currencyCode == 'USD' || $currencyCode == 'EUR')
+        	{
+				$response = $client->TP_Islem_Odeme_WD($result);
+				if($response->TP_Islem_Odeme_WDResult->Sonuc > 0){
+					$this->response->redirect($response->TP_Islem_Odeme_WDResult->UCD_URL);
+				} else {
+					$this->session->data['error'] = $response->TP_Islem_Odeme_WDResult->Sonuc_Str;
+					$this->response->redirect($this->url->link('checkout/checkout', '', true));
+				}
+			} else {
+				$response = $client->Pos_Odeme($result);
+				if($response->Pos_OdemeResult->Sonuc > 0){
+					$this->response->redirect($response->Pos_OdemeResult->UCD_URL);
+				} else {
+					$this->session->data['error'] = $response->Pos_OdemeResult->Sonuc_Str;
+					$this->response->redirect($this->url->link('checkout/checkout', '', true));
+				}
+			}
+		} catch (\Exception $e) {
+			throw new \Exception($e->getMessage());
+		}
+    }
+
+	/**
+     * Generate Paymnet Request
+     * @return string
+     */
+    public function getPaymentRequestCurrceny($result, $secureString, $currencyCode) 
 	{
 		try {
 			$client = $this->_createSoapClient($this->getApiUrl(), 0);
