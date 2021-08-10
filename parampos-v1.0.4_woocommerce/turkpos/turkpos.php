@@ -321,7 +321,7 @@ function param_init_gateway_class() {
 				return;
 			}
 		
-			wp_enqueue_script('validation_lib_js', '/turkpos/views/js/jquery.validate.min.js');
+			wp_enqueue_script('validation_lib_js', plugins_url() . '/turkpos/views/js/jquery.validate.min.js');
 			wp_enqueue_script('popup_lib_js', plugins_url() . '/turkpos/views/js/jquery.magnific-popup.min.js');
 			
 			wp_enqueue_script('jCard_js', plugins_url('/turkpos/views/js/card.js'));
