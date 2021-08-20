@@ -129,11 +129,11 @@ class ParamAPI
 		$request->GUID = Configuration::get('PARAM_GUID');
 		
 		$quoteResponse = $this->getBinQuote($request);
-		$posId = 1023;
+		
 		$installment = [];
 		if($quoteResponse){
 			foreach ($quoteResponse as $key => $resp) {
-				if ($resp[0]["SanalPOS_ID"] == $posId) { 
+				if ($resp[0]["SanalPOS_ID"] == $posId['posId']) { 
 					$installmentIndex = 12;
 					for($i = 1; $i <= $installmentIndex; $i++) {
 						$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
