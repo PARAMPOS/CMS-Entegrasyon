@@ -160,6 +160,11 @@ namespace Nop.Plugin.Payments.Param
                 taksit = int.Parse(_pos.Split('|')[1] ?? "1");
                 oran = double.Parse(_pos.Split('|')[2] ?? "1");
                 taksitTutar = double.Parse(_pos.Split('|')[3] ?? "1");
+
+                if(taksit == 1 && oran == 1)
+                {
+                    oran = 0;
+                }
             }
 
             paramRequest.Toplam_Tutar = taksitTutar.ToString();

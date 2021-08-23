@@ -2,7 +2,7 @@
   "Group": "Payment methods",
   "FriendlyName": "Param Payment",
   "SystemName": "Payments.Param",
-  "Version": "1.0.5",
+  "Version": "1.6",
   "SupportedVersions": [ "4.30" ],
   "Author": "Param Team",
   "DisplayOrder": 1,

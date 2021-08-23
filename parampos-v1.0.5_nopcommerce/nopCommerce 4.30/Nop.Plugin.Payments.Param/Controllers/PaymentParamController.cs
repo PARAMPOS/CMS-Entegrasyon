@@ -65,9 +65,9 @@ namespace Nop.Plugin.Payments.Param.Controllers
 
         [AuthorizeAdmin]
         [Area(AreaNames.Admin)]
-        public IActionResult Configure()
+        public async System.Threading.Tasks.Task<IActionResult> ConfigureAsync()
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManagePaymentMethods))
+            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManagePaymentMethods))
                 return AccessDeniedView();
 
             var model = new ConfigurationModel()
@@ -89,13 +89,13 @@ namespace Nop.Plugin.Payments.Param.Controllers
         [HttpPost]
         [AuthorizeAdmin]
         [Area(AreaNames.Admin)]
-        public IActionResult Configure(ConfigurationModel model)
+        public async System.Threading.Tasks.Task<IActionResult> ConfigureAsync(ConfigurationModel model)
         {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManagePaymentMethods))
+            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManagePaymentMethods))
                 return AccessDeniedView();
 
             if (!ModelState.IsValid)
-                return Configure();
+                return await ConfigureAsync();
 
             //save settings
             _paramPaymentSettings.UseSandbox = model.UseSandbox;
@@ -106,15 +106,15 @@ namespace Nop.Plugin.Payments.Param.Controllers
             _paramPaymentSettings.TestUrl = model.TestUrl;
             _paramPaymentSettings.ProductUrl = model.ProductUrl;
             _paramPaymentSettings.Installment = model.Installment;
-             _settingService.SaveSetting(_paramPaymentSettings);
+            await _settingService.SaveSettingAsync(_paramPaymentSettings);
 
-            return  Configure();
+            return await ConfigureAsync();
         }
 
 
 
         [HttpPost]
-        public JsonResult BIN_SanalPos(string cardCode)
+        public async System.Threading.Tasks.Task<JsonResult> BIN_SanalPosAsync(string cardCode)
         {
             if (string.IsNullOrEmpty(cardCode))
             {
@@ -123,7 +123,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
 
             if (string.IsNullOrEmpty(_paramPaymentSettings.ClientCode))
             {
-                if ( _workContext.WorkingLanguage.LanguageCulture == "tr-TR")
+                if ((await _workContext.GetWorkingLanguageAsync()).LanguageCulture == "tr-TR")
                 {
                     return Json(new { error = "Hata: Ayarlardan 'Müşteri Kodu' girişi yapınız!" });
                 }
@@ -134,7 +134,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
             }
             if (string.IsNullOrEmpty(_paramPaymentSettings.ClientUsername))
             {
-                if (_workContext.WorkingLanguage.LanguageCulture == "tr-TR")
+                if ((await _workContext.GetWorkingLanguageAsync()).LanguageCulture == "tr-TR")
                 {
                     return Json(new { error = "Hata: Ayarlardan 'Müşteri Adı' girişi yapınız!" });
                 }
@@ -145,7 +145,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
             }
             if (string.IsNullOrEmpty(_paramPaymentSettings.ClientPassword))
             {
-                if (_workContext.WorkingLanguage.LanguageCulture == "tr-TR")
+                if ((await _workContext.GetWorkingLanguageAsync()).LanguageCulture == "tr-TR")
                 {
                     return Json(new { error = "Hata: Ayarlardan 'Müşteri Parola' girişi yapınız!" });
                 }
@@ -156,7 +156,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
             }
             if (string.IsNullOrEmpty(_paramPaymentSettings.ProductUrl))
             {
-                if (_workContext.WorkingLanguage.LanguageCulture == "tr-TR")
+                if ((await _workContext.GetWorkingLanguageAsync()).LanguageCulture == "tr-TR")
                 {
                     return Json(new { error = "Hata: Ayarlardan 'Product Url' girişi yapınız!" });
                 }
@@ -167,7 +167,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
             }
             if (string.IsNullOrEmpty(_paramPaymentSettings.ProductUrl))
             {
-                if (_workContext.WorkingLanguage.LanguageCulture == "tr-TR")
+                if ((await _workContext.GetWorkingLanguageAsync()).LanguageCulture == "tr-TR")
                 {
                     return Json(new { error = "Hata: Ayarlardan 'Product Url' girişi yapınız!" });
                 }
@@ -226,7 +226,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
 
 
             var httpClient = new HttpClient();
-            var json =  httpClient.GetStringAsync("https://lookup.binlist.net/" + cardCode).Result;
+            var json = await httpClient.GetStringAsync("https://lookup.binlist.net/" + cardCode);
 
             string name = new Regex(@"\{""name"":""([^""].*?)"",", RegexOptions.IgnoreCase).Match(json).Groups[1].Value;
             string brand = new Regex(@"""scheme"":""([^""].*?)"",", RegexOptions.IgnoreCase).Match(json).Groups[1].Value;
@@ -240,11 +240,11 @@ namespace Nop.Plugin.Payments.Param.Controllers
 
 
         [Route("PaymentParam/OrderRefresh/{orderId?}/")]
-        public  IActionResult OrderRefresh(int orderId = 0)
+        public async System.Threading.Tasks.Task<IActionResult> OrderRefreshAsync(int orderId = 0)
         {
             if (orderId > 0)
             {
-                Order lastOrder = ( _orderService.GetOrderById(orderId));
+                Order lastOrder = (await _orderService.GetOrderByIdAsync(orderId));
 
                 if (lastOrder != null)
                 {
@@ -254,8 +254,8 @@ namespace Nop.Plugin.Payments.Param.Controllers
                         {
                             if (_orderProcessingService.CanCancelOrder(lastOrder))
                             {
-                                 _orderProcessingService.DeleteOrder(lastOrder);
-                                 _orderProcessingService.ReOrder(lastOrder);
+                                await _orderProcessingService.DeleteOrderAsync(lastOrder);
+                                await _orderProcessingService.ReOrderAsync(lastOrder);
                                 return RedirectToRoute("Checkout");
                             }
                         }
@@ -270,11 +270,11 @@ namespace Nop.Plugin.Payments.Param.Controllers
 
 
         [Route("PaymentParam/OrderComplete/{hash?}/{orderId?}/")]
-        public  IActionResult OrderComplete(string hash = "", int orderId = 0)
+        public async System.Threading.Tasks.Task<IActionResult> OrderCompleteAsync(string hash = "", int orderId = 0)
         {
             if (hash != "" && orderId > 0)
             {
-                Order lastOrder = ( _orderService.GetOrderById(orderId));
+                Order lastOrder = (await _orderService.GetOrderByIdAsync(orderId));
 
                 if (lastOrder != null)
                 {
@@ -288,7 +288,7 @@ namespace Nop.Plugin.Payments.Param.Controllers
                                 {
                                     if (_orderProcessingService.CanMarkOrderAsPaid(lastOrder))
                                     {
-                                         _orderProcessingService.MarkOrderAsPaid(lastOrder);
+                                        await _orderProcessingService.MarkOrderAsPaidAsync(lastOrder);
                                         return RedirectToRoute("CheckoutCompleted", new { orderId = orderId });
                                     }
                                 }

@@ -31,7 +31,7 @@ namespace Nop.Plugin.Payments.Param.Components
             this._workContext = workContext;
         }
 
-        public IViewComponentResult Invoke()
+        public async System.Threading.Tasks.Task<IViewComponentResult> InvokeAsync()
         {
             var model = new PaymentInfoModel();
 
@@ -55,11 +55,11 @@ namespace Nop.Plugin.Payments.Param.Components
 
             ViewBag.TP_Ozel_Oran_Liste = TP_Ozel_Oran_Liste();
 
-            var cartTotal = _shoppingCartService.PrepareMiniShoppingCartModel();
+            var cartTotal = await _shoppingCartService.PrepareMiniShoppingCartModelAsync();
             ViewBag.SubTotalStr = cartTotal.SubTotal;
             ViewBag.SubTotal = Regex.Replace(cartTotal.SubTotal, @"[^0-9\,]", "");
 
-            if ( _workContext.WorkingLanguage.LanguageCulture == "tr-TR")
+            if ((await _workContext.GetWorkingLanguageAsync()).LanguageCulture == "tr-TR")
             {
                 ViewBag.Lang = "tr-TR";
             }

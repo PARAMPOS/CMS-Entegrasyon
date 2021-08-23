@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -26,10 +27,10 @@ using Nop.Services.Plugins;
 
 namespace Nop.Plugin.Payments.Param
 {
-	/// <summary>
-	/// eWay payment processor
-	/// </summary>
-	public class ParamPaymentProcessor : BasePlugin, IPaymentMethod
+    /// <summary>
+    /// eWay payment processor
+    /// </summary>
+    public class ParamPaymentProcessor : BasePlugin, IPaymentMethod
     {
         #region Fields
 
@@ -106,7 +107,7 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="processPaymentRequest">Sipariş işleme için gerekli ödeme bilgileri</param>
         /// <returns>Ödeme sonucunu işle</returns>
-        public  ProcessPaymentResult ProcessPayment(ProcessPaymentRequest processPaymentRequest)
+        public async Task<ProcessPaymentResult> ProcessPaymentAsync(ProcessPaymentRequest processPaymentRequest)
         {
             _paramPaymentSettings.ProcessPaymentRequest = processPaymentRequest;
 
@@ -117,7 +118,7 @@ namespace Nop.Plugin.Payments.Param
                 _paramPaymentSettings.ProcessPaymentRequest.CustomValues.Remove("Pos");
             }           
             
-            return  new ProcessPaymentResult { NewPaymentStatus = PaymentStatus.Pending };
+            return await Task.FromResult(new ProcessPaymentResult { NewPaymentStatus = PaymentStatus.Pending });
         }
 
         string _pos = "";
@@ -126,7 +127,7 @@ namespace Nop.Plugin.Payments.Param
         /// Post process payment (used by payment gateways that require redirecting to a third-party URL)
         /// </summary>
         /// <param name="postProcessPaymentRequest">Payment info required for an order processing</param>
-        public  void PostProcessPayment(PostProcessPaymentRequest postProcessPaymentRequest)
+        public async Task PostProcessPaymentAsync(PostProcessPaymentRequest postProcessPaymentRequest)
         {
             if (postProcessPaymentRequest == null) throw new ArgumentNullException(nameof(postProcessPaymentRequest));
 
@@ -159,6 +160,11 @@ namespace Nop.Plugin.Payments.Param
                 taksit = int.Parse(_pos.Split('|')[1] ?? "1");
                 oran = double.Parse(_pos.Split('|')[2] ?? "1");
                 taksitTutar = double.Parse(_pos.Split('|')[3] ?? "1");
+
+                if(taksit == 1 && oran == 1)
+                {
+                    oran = 0;
+                }
             }
 
             paramRequest.Toplam_Tutar = taksitTutar.ToString();
@@ -174,16 +180,16 @@ namespace Nop.Plugin.Payments.Param
             paramRequest.Basarili_URL = successUrl;
             paramRequest.Hata_URL = failUrl;
 
-            var processPaymentResult =  _paymentService.ProcessPayment(_paramPaymentSettings.ProcessPaymentRequest);
+            var processPaymentResult = await _paymentService.ProcessPaymentAsync(_paramPaymentSettings.ProcessPaymentRequest);
 
-            var billingAddress =  _addressService.GetAddressById(postProcessPaymentRequest.Order.BillingAddressId) 
+            var billingAddress = await _addressService.GetAddressByIdAsync(postProcessPaymentRequest.Order.BillingAddressId) 
                 ?? throw new NopException("Billing address cannot be loaded");
             if (billingAddress != null)
             {
                 paramRequest.KK_Sahibi_GSM = CommonHelper.EnsureNumericOnly(billingAddress.PhoneNumber);
             }
             paramRequest.Siparis_ID = postProcessPaymentRequest.Order.Id.ToString();
-            paramRequest.Siparis_Aciklama = _storeContext.CurrentStore.Name
+            paramRequest.Siparis_Aciklama = (await _storeContext.GetCurrentStoreAsync()).Name
                 + ". Order #" + postProcessPaymentRequest.Order.Id.ToString()
                 + ", " + DateTime.Now
                 + " tarihli ödeme.";
@@ -334,13 +340,13 @@ namespace Nop.Plugin.Payments.Param
             {
                 _httpContextAccessor.HttpContext.Response.Clear();
                 _httpContextAccessor.HttpContext.Response.ContentType = "application/json;";
-                _httpContextAccessor.HttpContext.Response.Body.Write(Encoding.UTF8.GetBytes("{\"redirect\":\"" + uCD_URL + "\"}"));
+                await _httpContextAccessor.HttpContext.Response.WriteAsync("{\"redirect\":\"" + uCD_URL + "\"}");
             }
             else if (islem_ID == "0" && sonuc_Str != "")
             {
                 _httpContextAccessor.HttpContext.Response.Clear();
                 _httpContextAccessor.HttpContext.Response.ContentType = "application/json;";
-                 _httpContextAccessor.HttpContext.Response.Body.Write(Encoding.UTF8.GetBytes("{\"redirect\":\"" + failUrl + "\"}"));
+                await _httpContextAccessor.HttpContext.Response.WriteAsync("{\"redirect\":\"" + failUrl + "\"}");
             }
             else
             {
@@ -348,6 +354,7 @@ namespace Nop.Plugin.Payments.Param
                 _httpContextAccessor.HttpContext.Response.ContentType = "application/json;";
             }
 
+            return;
         }
 
 
@@ -357,9 +364,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="cart">Shoping cart</param>
         /// <returns>true - hide; false - display.</returns>
-        public bool HidePaymentMethod(IList<ShoppingCartItem> cart)
+        public Task<bool> HidePaymentMethodAsync(IList<ShoppingCartItem> cart)
         {
-            return false;
+            return Task.FromResult(false);
 
         }
 
@@ -369,9 +376,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="cart">Shoping cart</param>
         /// <returns>Additional handling fee</returns>
-        public decimal GetAdditionalHandlingFee(IList<ShoppingCartItem> cart)
+        public Task<decimal> GetAdditionalHandlingFeeAsync(IList<ShoppingCartItem> cart)
         {
-            return decimal.Zero;
+            return Task.FromResult(decimal.Zero);
         }
 
         /// <summary>
@@ -379,9 +386,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="capturePaymentRequest">Capture payment request</param>
         /// <returns>Capture payment result</returns>
-        public CapturePaymentResult Capture(CapturePaymentRequest capturePaymentRequest)
+        public Task<CapturePaymentResult> CaptureAsync(CapturePaymentRequest capturePaymentRequest)
         {
-            return new CapturePaymentResult { Errors = new[] { "Capture method not supported" } };
+            return Task.FromResult(new CapturePaymentResult { Errors = new[] { "Capture method not supported" } });
 
         }
 
@@ -390,9 +397,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="refundPaymentRequest">Request</param>
         /// <returns>Result</returns>
-        public RefundPaymentResult Refund(RefundPaymentRequest refundPaymentRequest)
+        public Task<RefundPaymentResult> RefundAsync(RefundPaymentRequest refundPaymentRequest)
         {
-            return new RefundPaymentResult { Errors = new[] { "Refund method not supported" } };
+            return Task.FromResult(new RefundPaymentResult { Errors = new[] { "Refund method not supported" } });
 
         }
 
@@ -401,9 +408,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="voidPaymentRequest">Request</param>
         /// <returns>Result</returns>
-        public VoidPaymentResult Void(VoidPaymentRequest voidPaymentRequest)
+        public Task<VoidPaymentResult> VoidAsync(VoidPaymentRequest voidPaymentRequest)
         {
-            return new VoidPaymentResult { Errors = new[] { "Void method not supported" } };
+            return Task.FromResult(new VoidPaymentResult { Errors = new[] { "Void method not supported" } });
 
         }
 
@@ -412,9 +419,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="processPaymentRequest">Payment info required for an order processing</param>
         /// <returns>Process payment result</returns>
-        public ProcessPaymentResult ProcessRecurringPayment(ProcessPaymentRequest processPaymentRequest)
+        public Task<ProcessPaymentResult> ProcessRecurringPaymentAsync(ProcessPaymentRequest processPaymentRequest)
         {
-            return new ProcessPaymentResult { Errors = new[] { "Recurring payment not supported" } };
+            return Task.FromResult(new ProcessPaymentResult { Errors = new[] { "Recurring payment not supported" } });
 
         }
 
@@ -423,9 +430,9 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="cancelPaymentRequest">Request</param>
         /// <returns>Result</returns>
-        public CancelRecurringPaymentResult CancelRecurringPayment(CancelRecurringPaymentRequest cancelPaymentRequest)
+        public Task<CancelRecurringPaymentResult> CancelRecurringPaymentAsync(CancelRecurringPaymentRequest cancelPaymentRequest)
         {
-            return new CancelRecurringPaymentResult { Errors = new[] { "Recurring payment not supported" } };
+            return Task.FromResult(new CancelRecurringPaymentResult { Errors = new[] { "Recurring payment not supported" } });
         }
 
         /// <summary>
@@ -433,7 +440,7 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="order">Sipariş</param>
         /// <returns>Sonuç</returns>
-        public bool CanRePostProcessPayment(Order order)
+        public Task<bool> CanRePostProcessPaymentAsync(Order order)
         {
             if (order == null)
                 throw new ArgumentNullException(nameof(order));
@@ -441,13 +448,13 @@ namespace Nop.Plugin.Payments.Param
             //It also validates whether order is also paid (after redirection) so customers will not be able to pay twice
             //payment status should be Pending
             if (order.PaymentStatus != PaymentStatus.Pending)
-                return false;
+                return Task.FromResult(false);
 
             //let's ensure that at least 1 minute passed after order is placed
             if ((DateTime.UtcNow - order.CreatedOnUtc).TotalMinutes < 1)
-                return false;
+                return Task.FromResult(false);
 
-            return true;
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -463,7 +470,7 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="form">The parsed form values</param>
         /// <returns>List of validating errors</returns>
-        public IList<string> ValidatePaymentForm(IFormCollection form)
+        public async Task<IList<string>> ValidatePaymentFormAsync(IFormCollection form)
         {
             var warnings = new List<string>();
 
@@ -480,7 +487,7 @@ namespace Nop.Plugin.Payments.Param
             warnings.AddRange(validationResult.Errors.Select(error => error.ErrorMessage));
             if (warnings.Count > 0)
             {
-                return  warnings;
+                return await Task.FromResult<IList<string>>(warnings);
             }
 
             string url = _paramPaymentSettings.UseSandbox ? _paramPaymentSettings.TestUrl : _paramPaymentSettings.ProductUrl;
@@ -545,7 +552,7 @@ namespace Nop.Plugin.Payments.Param
                 warnings.Add(sonuc_Str);
             }
 
-            return  warnings;           
+            return await Task.FromResult<IList<string>>(warnings);           
 
         }
 
@@ -554,7 +561,7 @@ namespace Nop.Plugin.Payments.Param
         /// </summary>
         /// <param name="form">The parsed form values</param>
         /// <returns>Payment info holder</returns>
-        public ProcessPaymentRequest GetPaymentInfo(IFormCollection form)
+        public Task<ProcessPaymentRequest> GetPaymentInfoAsync(IFormCollection form)
         {
             var sanalPOSID = form["SanalPOSID"].ToString();
             var installment = form["Installment"].ToString() == "" ? "1" : form["Installment"].ToString();
@@ -575,13 +582,13 @@ namespace Nop.Plugin.Payments.Param
                 CustomValues = customValues
             };
 
-            return paymentInfo;
+            return Task.FromResult(paymentInfo);
         }
 
         /// <summary>
         /// Install plugin
         /// </summary>
-        public override void Install()
+        public override async Task InstallAsync()
         {
             var settings = new IParamPaymentSettings()
             {
@@ -594,10 +601,10 @@ namespace Nop.Plugin.Payments.Param
                 ProductUrl = "https://posws.param.com.tr/turkpos.ws/service_turkpos_prod.asmx?wsdl",
                 Installment = false
             };
-             _settingService.SaveSetting(settings);
+            await _settingService.SaveSettingAsync(settings);
 
             //locales
-            _localizationService.AddPluginLocaleResource(new Dictionary<string, string>
+            await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
             {
                 ["Plugins.Payments.Param.UseSandbox"] = "Test Mode:",
                 ["Plugins.Payments.Param.UseSandbox.Hint"] = "Use test mode?:",
@@ -613,7 +620,7 @@ namespace Nop.Plugin.Payments.Param
                 ["Plugins.Payments.Param.ErrorAvailable"] = "This page has expired. Please, create a new order."
             }, 1); //EN
 
-            _localizationService.AddPluginLocaleResource(new Dictionary<string, string>
+            await _localizationService.AddLocaleResourceAsync(new Dictionary<string, string>
             {
                 ["Plugins.Payments.Param.UseSandbox"] = "Test Modu:",
                 ["Plugins.Payments.Param.UseSandbox.Hint"] = "Test Modunu?:",
@@ -628,21 +635,30 @@ namespace Nop.Plugin.Payments.Param
                 ["Plugins.Payments.Param.ErrorAvailable"] = "Bu ödeme sayfasının süresi doldu. Lütfen yeni bir sipariş oluşturun."
             }, 2); //TR
 
-             base.Install();
+            await base.InstallAsync();
         }
 
         /// <summary>
         /// Uninstall plugin
         /// </summary>
-        public override void Uninstall()
+        public override async Task UninstallAsync()
         {
             //locales
-            _settingService.DeleteSetting<IParamPaymentSettings>();
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.UseSandbox");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.UseSandbox.Hint");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.ClientCode");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.ClientCode.Hint");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.ClientUsername");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.ClientUsername.Hint");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.ClientPassword");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.ClientPassword.Hint");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.Guid");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.Guid.Hint");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.Installment");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.Installment.Hint");
+            await _localizationService.DeleteLocaleResourcesAsync("Plugins.Payments.Param.PaymentMethodDescription");
 
-            //locales
-            _localizationService.DeletePluginLocaleResources("Plugins.Payments.Param");
-
-            base.Uninstall();
+            await base.UninstallAsync();
         }
 
         /// <summary>
@@ -702,8 +718,10 @@ namespace Nop.Plugin.Payments.Param
         /// <summary>
         /// Gets a payment method description that will be displayed on checkout pages in the public store
         /// </summary>
-        public string PaymentMethodDescription => _localizationService.GetResource("Plugins.Payments.Param.PaymentMethodDescription");
-
+        public async Task<string> GetPaymentMethodDescriptionAsync()
+        {
+            return await _localizationService.GetResourceAsync("Plugins.Payments.Param.PaymentMethodDescription");
+        }
         #endregion
 
 
