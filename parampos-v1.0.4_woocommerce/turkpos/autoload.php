@@ -64,16 +64,39 @@ class Autoloader
      */
     public static function loader($className)
     {
-        include_once dirname(__FILE__). '/Model/Api/Client.php';
+        $path = dirname(__FILE__);
+        include_once $path . '/Helper/Data.php';
+        include_once $path . '/Helper/Escaper.php';
+        
+        include_once $path . '/Block/OrderView.php';
+
+        include_once $path . '/Model/Api/Client.php';
+        include_once $path . '/Model/Api/Pos_Odeme.php';
+        include_once $path . '/Model/Api/TP_Islem_Odeme_WD.php';
+        include_once $path . '/Model/Api/Bin.php';
+        include_once $path . '/Model/Api/Pay3d.php';
+        include_once $path . '/Model/Gateway/InitPOS.php';
+        include_once $path . '/Model/Gateway/Transaction.php';
+        include_once $path . '/Model/Gateway/InstallmentForMerchant.php';
+        include_once $path . '/Model/Gateway/InstallmentForUser.php';
+
+        /*
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(dirname(__FILE__)), RecursiveIteratorIterator::SELF_FIRST);
         $files = [];
         foreach ($objects as $name => $object) {
             if ('.' === $object) continue;
             if ('..' === $object) continue;
             if (strpos($object->getPathname(), '.php') !== false) {
-                include_once $object->getPathname();
+                $files[] = $object->getPathname();
+                //include_once $object->getPathname();
             }
         }
+        unset($files[0]); //autoload
+        unset($files[1]); //turkpos
+        unset($files[2]); //setup
+        echo '<pre>';
+        var_dump($files);
+        */
     }
 
     /**
