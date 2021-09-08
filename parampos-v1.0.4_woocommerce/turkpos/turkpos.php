@@ -176,6 +176,12 @@ function param_init_gateway_class() {
 					'description' => 'Ödeme yaparken taksitleri göster.',
 					'default'     => 'no'
 				),
+                'installment_limit' => array(
+                    'title'       => 'X Lira Üzerine Taksiti Aktif Et',
+                    'type'        => 'text',
+                    'description' => '100 lira üzerine taksitleri aktif et.',
+                    'default'     => '0'
+                ),
 				'pos_rates' => array(
 					'title' => 'Kullanıcak POS Oranları',
 					'description' => 'Kullanıcak POS Oranları',
@@ -321,7 +327,7 @@ function param_init_gateway_class() {
 				return;
 			}
 		
-			wp_enqueue_script('validation_lib_js', plugins_url() . '/turkpos/views/js/jquery.validate.min.js');
+			wp_enqueue_script('validation_lib_js',plugins_url() . '/turkpos/views/js/jquery.validate.min.js');
 			wp_enqueue_script('popup_lib_js', plugins_url() . '/turkpos/views/js/jquery.magnific-popup.min.js');
 			
 			wp_enqueue_script('jCard_js', plugins_url('/turkpos/views/js/card.js'));
@@ -473,11 +479,13 @@ add_action('wp_footer', 'checkout_billing_email_js_ajax' );
 function checkout_billing_email_js_ajax() {
 	$paramGateway = new WC_Param_Gateway();
     // Only on Checkout
-    if( is_checkout() && ! is_wc_endpoint_url() && $paramGateway->settings['installment'] !== 'no') :
+    global $woocommerce;
+    $subtotal = (float) $woocommerce->cart->total;
+    if( is_checkout() && ! is_wc_endpoint_url() && $paramGateway->settings['installment'] !== 'no' && $paramGateway->settings['installment_limit'] <= $subtotal)  :
     ?>
 	<script type="text/javascript">
 		jQuery(function($){
-			if (typeof wc_checkout_params === 'undefined') 
+			if (typeof wc_checkout_params === 'undefined')
 				return false;
 
 				$(document.body).on("click", "a#inst-link" ,function(evt) {
@@ -505,7 +513,7 @@ function checkout_billing_email_js_ajax() {
 							});
 						},
 						error: function(error) {
-							
+
 						}
 					});
 				});
@@ -514,7 +522,7 @@ function checkout_billing_email_js_ajax() {
     <script type="text/javascript">
 		jQuery(function($){
 			window.loader = '<div class="clearfix"></div><div class="spinner-border custom-spinner" role="status"><span class="sr-only">Yükleniyor...</span></div>';
-			if (typeof wc_checkout_params === 'undefined') 
+			if (typeof wc_checkout_params === 'undefined')
 				return false;
 			var requestOn = false;
 			$(document.body).on("keyup", "input#ccpp_creditcard_cc_number" ,function(evt) {
@@ -546,7 +554,7 @@ function checkout_billing_email_js_ajax() {
 							var data = jQuery.parseJSON(result);
 							if(Object.keys(data).length > 0){
 								$.each(data, function(index, value) {
-									$('#ccpp_creditcard_cc_installment').append($('<option>', { 
+									$('#ccpp_creditcard_cc_installment').append($('<option>', {
 										value: index + '|' + value.rate + '|' + value.fee,
 										text : index + ' Taksit - %' + value.rate + ' Komisyon - Genel Toplam ' + value.total_pay
 									}));
@@ -556,7 +564,7 @@ function checkout_billing_email_js_ajax() {
 							}
 						},
 						error: function(error) {
-							
+
 						}
 					});
 				} else {
