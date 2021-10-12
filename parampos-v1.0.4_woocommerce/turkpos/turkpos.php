@@ -441,9 +441,9 @@ function order_complate( $orderId ) {
 	$result = $helper->validateTransactionResponse($orderId, $_POST);
 	if($resp === 'success' && !$result['error'])
 	{
-		
-		$tr = new Transaction();
-		$orderTransaction = Transaction::getTransactionByOrderId($orderId);
+
+        $tr = new Transaction();
+        $orderTransaction = $tr->getTransactionByOrderId($orderId);
 		/*
 		Deprecated
 		$fee = new WC_Order_Item_Fee();
@@ -688,14 +688,14 @@ function get_bank_installments() {
 						$rate = $resp[0]["MO_$prerate"];
 						if(floatval($rate) < 0)
 							continue;
-						
-						$subtotal = (float) $woocommerce->cart->total;
-						$amount = (float) (1 + ($rate / 100)) *  $subtotal;
-						$fee = (float) ($rate / 100) * $amount;
-						$installment[$i]['month'] = $prerate;
-						$installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
-						$installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $cur_name;
-						$installment[$i]['fee'] = number_format($fee, 2);
+
+                        $subtotal = (float) $woocommerce->cart->total;
+                        $amount = (float) (1 + ($rate / 100)) *  $subtotal;
+                        $fee = (float) ($rate / 100) * $subtotal;
+                        $installment[$i]['month'] = $prerate;
+                        $installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
+                        $installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $cur_name;
+                        $installment[$i]['fee'] = number_format($fee, 2);
 					}
 				}
 			}

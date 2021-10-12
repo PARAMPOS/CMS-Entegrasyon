@@ -52,7 +52,7 @@ class InstallmentForUser extends Client
     public function fetchInstallment()
     {
         $results = [];
-        if($this->response->TP_Ozel_Oran_SK_ListeResult < 0){
+        if($this->response->TP_Ozel_Oran_SK_ListeResult->Sonuc < 0){
             return [
                 'Sonuc' => $this->response->TP_Ozel_Oran_SK_ListeResult->Sonuc,
                 'Sonuc_Str' => $this->response->TP_Ozel_Oran_SK_ListeResult->Sonuc_Str,

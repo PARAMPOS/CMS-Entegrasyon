@@ -243,6 +243,7 @@ class Transaction
 					$feeItem = new WC_Order_Item_Fee();
 					$feeItem->set_amount($fee);
 					$feeItem->set_total($fee);
+					$feeItem->set_tax_class('sifir-oran');
 					$feeItem->set_name(sprintf( __('Kredi kartı komisyon farkı %s taksit', 'woocommerce'), wc_clean($installment)));
 					$order->add_item($feeItem);
 					$order->calculate_totals(true);
@@ -250,7 +251,7 @@ class Transaction
 			}
 			$transaction->installment = $installment; 
 			$transaction->cartTotalIncFee = (float) (1 + ($rate / 100)) * $transaction->cartTotalExcFee;
-			$transaction->gatewayFee = (float) ($fee / 100) * $transaction->cartTotalIncFee;
+			$transaction->gatewayFee = (float) ($transaction->cartTotalIncFee - $transaction->cartTotalExcFee);
 			
 			$transaction->ccName = Data::getParam('cc_name');
 			$transaction->ccNumber = str_replace(' ', '', Data::getParam('cc_number'));
