@@ -95,7 +95,7 @@ class OrderView
 		$order = new WC_Order($tr->orderId);
 		$helper = new Data();
 		$order->get_currency();
-		$cur = $helper->getCurrency($tr->currencyNumber, 'iso_number');
+		@$cur = $helper->getCurrency($tr->currencyNumber, 'iso_number');
 		$currency = $cur->iso_code;
 		$t = '<li class="wide">
 			<hr/>
