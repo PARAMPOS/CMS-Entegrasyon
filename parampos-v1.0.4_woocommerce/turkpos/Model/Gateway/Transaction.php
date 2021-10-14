@@ -61,7 +61,7 @@ class Transaction
 		}
 
 		WC()->session = new WC_Session_Handler();
-		WC()->session->init();								   
+		WC()->session->init();
 		$orderId = WC()->session->get( 'order_awaiting_payment');
 		$order = new WC_Order($orderId);
 
@@ -69,7 +69,7 @@ class Transaction
 		$this->failUrl = add_query_arg(array('paramres' => 'fail'), $order->get_checkout_payment_url(true));
 		$this->shopName = get_option('blogname');
 		$this->isoLang = get_bloginfo("language");
-		
+
 		$this->trCreatedAt = date("Y-m-d H:i:s");
 		$this->ip = Data::getClientIp();
 
@@ -91,7 +91,7 @@ class Transaction
 			$this->exists = true;
 			$this->trId = $wpdb->insert_id;
 		}
-		return false; 
+		return false;
 	}
 
 	private function updateTransaction()
@@ -209,7 +209,7 @@ class Transaction
 		if (!$orderId || !$order) {
 			return false;
 		}
-		
+
 		if ($exists = Transaction::getTransactionByCartId($orderId)) {
 			$transaction->trId = $exists->trId;
 			$transaction->__construct();
@@ -232,7 +232,7 @@ class Transaction
 		$transaction->customerEmail = $order->get_billing_email();
 		$transaction->customerPhone = $order->get_billing_phone();
 		$transaction->customerCompany = $order->get_billing_company();
-			
+
 		if (Data::getParam('cc_number')) {
 			if($installmentData = Data::getParam('cc_installment')){
 				$installmentData = explode('|', $installmentData);
@@ -249,10 +249,10 @@ class Transaction
 					$order->calculate_totals(true);
 				}
 			}
-			$transaction->installment = $installment; 
+			$transaction->installment = $installment;
 			$transaction->cartTotalIncFee = (float) (1 + ($rate / 100)) * $transaction->cartTotalExcFee;
 			$transaction->gatewayFee = (float) ($transaction->cartTotalIncFee - $transaction->cartTotalExcFee);
-			
+
 			$transaction->ccName = Data::getParam('cc_name');
 			$transaction->ccNumber = str_replace(' ', '', Data::getParam('cc_number'));
 			$transaction->ccCVV = Data::getParam('cc_cvv');
@@ -267,7 +267,7 @@ class Transaction
 		$transaction->failUrl = add_query_arg(array('paramres' => 'fail'), $order->get_checkout_payment_url(true));
 		$transaction->shopName = get_option('blogname');
 		$transaction->isoLang = get_bloginfo("language");
-		
+
 		$transaction->trCreatedAt = date("Y-m-d H:i:s");
 		$transaction->ip = Data::getClientIp();
 		$products = $order->get_items();
