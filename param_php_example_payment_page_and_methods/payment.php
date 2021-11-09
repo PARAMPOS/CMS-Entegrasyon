@@ -6,6 +6,9 @@ session_start();
 @include "Auth.php";
 @include "TotalPaymentTransaction.php";
 @include "GeneralClass.php";
+ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 function isSucceced($value)
 {
     if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
@@ -35,8 +38,8 @@ if ($_POST) {
         "creditCardOwnerName" => "5372403939",
         "errorUrl" => "http://localhost/param_php_example_payment_page_and_methods/result.php?status=0",
         "succesUrl" => "http://localhost/param_php_example_payment_page_and_methods/result.php?status=1",
-        "orderID" => "1",
-        "paymentUrl" => "http://localhost/param_php_example_payment_page_and_methods/param_php/index.php",
+        "orderID" => rand(0,999999),
+        "paymentUrl" => "http://localhost/param_php_example_payment_page_and_methods/index.php",
         "orderExplanation" => date("d-m-Y H:i:s") . " tarihindeki ödeme",
         "installment" => $_POST['odemetaksit'],
         "transactionPayment" => $_POST['odemetutar'],
@@ -65,7 +68,7 @@ if ($_POST) {
         $transactionsValueList["totalPayment"],
         $transactionsValueList["transactionID"],
         $transactionsValueList["ipAdr"],
-        $transactionsValueList["paymentUrl"],
+        $transactionsValueList["paymentUrl"]
     );
 
 
@@ -80,8 +83,11 @@ if ($_POST) {
         $transactionsValueList["succesUrl"]);
 
     $data->Islem_Hash = $client->SHA2B64($authObject)->SHA2B64Result;
+    print_r($data);
     $response = $client->TP_Islem_Odeme($data);
+    print_r($response);
     isSucceced($response);
+
 
 }
 
