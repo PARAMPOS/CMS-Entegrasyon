@@ -273,7 +273,7 @@ include "totalRatio.php";
                                             <label for="cardNumber">Kart Numarası</label>
 
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="cardNumber"
+                                                <input type="text" class="form-control" name="cardNumber" autocomplete="off"
                                                        placeholder="Kart Numaranız" required autofocus
                                                        data-stripe="number" MAXLENGTH="16" value="4022774022774026"/>
                                                 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
@@ -287,11 +287,11 @@ include "totalRatio.php";
                                         <div class="form-group">
 
                                             <div class="col-xs-6 col-lg-6 pl-ziro">
-                                                <input type="text" class="form-control" name="expMonth" placeholder="MM"
+                                                <input type="text" class="form-control" name="expMonth" placeholder="MM" autocomplete="off"
                                                        required data-stripe="exp_month" MAXLENGTH="2" value="12"/>
                                             </div>
                                             <div class="col-xs-6 col-lg-6 pl-ziro">
-                                                <input type="text" class="form-control" name="expYear" placeholder="YY"
+                                                <input type="text" class="form-control" name="expYear" placeholder="YY" autocomplete="off"
                                                        required
                                                        data-stripe="exp_year" MAXLENGTH="2" value="26"/>
                                             </div>
@@ -300,7 +300,7 @@ include "totalRatio.php";
                                     <div class="col-xs-5 col-md-5 pull-right">
                                         <div class="form-group">
                                             <label for="cvCode">Güvenlik Kodu</label>
-                                            <input type="password" value="000" class="form-control" name="cvCode"
+                                            <input type="password" value="000" class="form-control" name="cvCode" autocomplete="off"
                                                    placeholder="CV" required
                                                    data-stripe="cvc" MAXLENGTH="3"/>
                                         </div>
