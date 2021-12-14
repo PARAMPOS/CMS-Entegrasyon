@@ -1,0 +1,526 @@
+.hepsi{
+
+width: 550px!important;
+margin: 0 auto;
+position: relative;
+float:left;
+}
+
+.card-wrapper{
+margin:5px;
+float:left ;
+}
+
+.parampos{
+border: 1px solid #cececf;
+overflow: hidden;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;3
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+margin-bottom: 20px;}
+
+.jp-card-invalid{
+color:red !important;
+
+}
+.border{
+border: 1px solid red !important;
+
+}
+.parampos input {   
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+-ms-box-sizing: border-box;
+-o-box-sizing: border-box;
+box-sizing: border-box;
+padding: 10px!important;
+border: 1px solid #fff;
+padding-left: 40px!important;
+width: 100%!important;
+min-height: 38px!important;
+font-size: 13px!important;}
+
+.paramposname{
+
+position: relative;
+font-size: 13px;
+
+}
+
+.parampos .tarih{width: 50%;
+float: left;}
+.paramposorta{
+border-top: 1px solid #e4e4e4;
+border-bottom: 1px solid #e4e4e4;}
+.paramposalt{
+
+border-bottom: 1px solid #e4e4e4;}
+.paramposust{
+border-top: 1px solid #e4e4e4;
+}
+
+.paramposleft{
+width: 50%;
+float: left;
+}
+.paramposright{
+width: 50%;
+float: right;
+}
+body {
+font-family: "proxima-nova", Helvetica Neue, sans-serif;
+}
+
+table {
+font-size: 1em;
+}
+
+.ui-draggable, .ui-droppable {
+background-position: top;
+}
+
+
+
+.taksit-title{width: 100%;
+text-align: center;
+padding-top: 2px;
+padding-bottom: 2px;
+}
+
+
+.taksit-title img{
+width: 100%;
+height: 30px;
+}  
+
+.taksit-container{
+background-color: #fff;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+margin-top:5px;
+border-radius: 4px;
+border: 1px solid #cececf;
+font-size: 14px;
+color: #5b5b65;
+list-style:none;
+font-family: "proxima-nova", Helvetica Neue, sans-serif;
+
+} 
+
+.tekcekim-container{
+background-color: #fff;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+border: 1px solid #cececf;
+
+font-size: 14px;
+color: #5b5b65;
+list-style:none;
+font-family: "proxima-nova", Helvetica Neue, sans-serif;
+} 
+
+.taksit-li{
+padding: 5px 10px 5px 30px;
+
+
+}
+.taksit-fiyat{
+text-align:right;
+float: right;
+}
+
+
+
+
+.regular-radio {
+
+}
+
+.regular-radio {
+-webkit-appearance: none;
+background-color: #e1e1e1;
+border: 7px solid #e1e1e1;
+border-radius: 10px;
+width: 100%;
+display: inline-block;
+position: relative;
+width: 15px;
+height: 15px;
+}
+
+.regular-radio:checked {
+background: grey;
+border: 4px solid #e1e1e1;
+}
+
+
+
+
+
+@keyframes click-wave {
+0% {
+height: 15px;
+width:15px;
+opacity: 0.35;
+position: relative;
+}
+100% {
+height: 100px;
+width: 100px;
+margin-left: -40px;
+margin-top: -40px;
+opacity: 0;
+}
+}
+
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+position: absolute;
+left: -9999px;
+}
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+position: relative;
+padding-left: 28px;
+cursor: pointer;
+line-height: 20px;
+display: inline-block;
+
+}
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+content: '';
+position: absolute;
+left: 1px;
+top: 1px;
+width: 18px;
+height: 18px;
+border: 1px solid #ddd;
+border-radius: 100%;
+background: #fff;
+}
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+content: '';
+width: 12px;
+height: 12px;
+background: #3561aa;
+position: absolute;
+top: 4px;
+left: 4px;
+border-radius: 100%;
+-webkit-transition: all 0.2s ease;
+transition: all 0.2s ease;
+}
+[type="radio"]:not(:checked) + label:after {
+opacity: 0;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+[type="radio"]:checked + label:after {
+opacity: 1;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+.taksit-li label {
+
+margin-left: -21px;
+
+
+}
+
+
+
+.taksit-li:hover, .taksit-li label:hover{
+background: #efefef;
+cursor: pointer;
+}
+
+
+
+.paramposcard input{
+background:  url(../../views/img/icon_credit_card.png) no-repeat 10px center;
+
+background-size: 25px 17px;
+background-repeat: no-repeat;
+
+}
+
+.paramposname input{
+
+background:  url(../../views/img/icon_user.png) no-repeat 10px center;
+background-size: 25px 17px;
+background-repeat: no-repeat;
+
+}
+
+.paramposexpry input{
+
+background:  url(../../views/img/icon_calle.png) no-repeat 10px center;
+background-size: 25px 17px;
+background-repeat: no-repeat;
+
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type="number"] {
+-moz-appearance: textfield;
+}
+
+.paramposcvc input{
+
+background:  url(../../views/img/icon_cvc.png) no-repeat 10px center;
+background-size: 25px 17px;
+background-repeat: no-repeat;
+
+}
+
+.taksit-baslik{ padding-bottom: 15px;
+font-size: 13px;
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+display: inline-block;}
+
+.taksit-secenek{
+
+border-top: 1px solid #e4e4e4;
+border-bottom: 0px;
+border-left: 0px;
+border-right: 0px;
+width: 100%;
+text-align: left;
+
+}
+
+
+.taksit-secenek select{
+box-sizing: border-box;
+
+border: 1px solid #fff;
+padding-left: 40px!important;
+width: 100%!important;
+min-height: 38px!important;
+font-size: 13px!important;
+
+}
+.parampos-banka-logo img{
+width:100%;
+
+}
+
+.taksit-secenekleri{
+
+font-size: 13px;
+padding-bottom: 15px;
+display: inline-block;
+text-align: center;
+width: 100%;
+margin: 0px;
+border-bottom: 1px solid #e4e4e4;
+margin-top: 10px;
+}
+
+
+.hepsi input[type="text"], hepsi input[type="password"], textarea, select , .hepsi, input{ 
+outline: none;
+}
+.odemeform-baslik{
+text-align: center;
+max-width: 350px;
+}
+
+.parampos-banka-logo{
+max-width:100px;
+float:left;
+box-sizing: border-box;
+
+border: 1px solid #fff;
+padding-left: 40px!important;
+width: 100%!important;
+min-height: 38px!important;
+font-size: 13px!important;
+
+}
+.logolar-parampos{
+height: 117px;
+cursor:pointer;
+
+}
+
+
+.paramposode{
+
+display: block;
+-moz-box-sizing: border-box;
+-ms-box-sizing: border-box;
+-o-box-sizing: border-box;
+box-sizing: border-box;
+width: 100%;
+height: 37px;
+border: 0;
+text-decoration: none;
+
+background: #3765b0;
+background-image: -webkit-linear-gradient(#3765b0,#325b9e);
+background-image: -moz-linear-gradient(#3765b0,#325b9e);
+background-image: -ms-linear-gradient(#3765b0,#325b9e);
+background-image: -o-linear-gradient(#3765b0,#325b9e);
+background-image: -webkit-linear-gradient(#3765b0,#325b9e);
+background-image: -moz-linear-gradient(#3765b0,#325b9e);
+background-image: -ms-linear-gradient(#3765b0,#325b9e);
+background-image: -o-linear-gradient(#3765b0,#325b9e);
+background-image: linear-gradient(#3765b0,#325b9e);
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+text-align: center;
+border-radius: 4px;
+-webkit-font-smoothing: antialiased;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+cursor: pointer;
+outline: 0;
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+font-weight: 700;
+font-size: 17px;
+color: #fff;
+text-shadow: 0 -1px 0 rgba(46,86,153,.3);
+-webkit-box-shadow: 0 1px 0 rgba(46,86,153,.15), 0 0 4px rgba(86,149,219,0), inset 0 2px 0 rgba(41,102,20,0);
+-moz-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+-ms-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+-o-box-shadow: 0 1px 0 rgba(46,86,153,.15),0 0 4px rgba(86,149,219,0),inset 0 2px 0 rgba(41,102,20,0);
+box-shadow: 0 1px 0 rgba(46,86,153,.15), 0 0 4px rgba(86,149,219,0), inset 0 2px 0 rgba(41,102,20,0);
+-webkit-transition: box-shadow .15s linear;
+-moz-transition: box-shadow .15s linear;
+-ms-transition: box-shadow .15s linear;
+-o-transition: box-shadow .15s linear;
+transition: box-shadow .15s linear;
+padding-top: 5px;
+margin-top: 20px;
+margin-bottom: 20px;
+overflow: hidden;
+
+}
+.parampos-i-icon {
+position: absolute;
+right: 4px;
+top: 82px;
+padding: 10px;
+cursor: pointer;
+
+}
+
+.info-window-active{
+transform: rotateY(0) !important;
+-moz-transform: rotateY(0) !important;
+-webkit-transform: rotateY(0) !important;
+-o-transform: rotateY(0) !important;
+-ms-transform: rotateY(0) !important;
+opacity: 1 !important;
+z-index: 999 !important;
+}
+
+.info-window.cvc {
+padding-bottom: 2px!important;
+width: 157px;
+}
+
+
+.info-window {
+background: #fff;
+position: absolute;
+padding: 5px!important;
+-webkit-border-radius: 7px;
+-ms-border-radius: 7px;
+-o-border-radius: 7px;
+border-radius: 7px;
+border: 1px solid #ccc!important;
+-webkit-transition: all .2s ease-in-out;
+-moz-transition: all .2s ease-in-out;
+-ms-transition: all .2s ease-in-out;
+-o-transition: all .2s ease-in-out;
+transition: all .2s ease-in-out;
+transform-style: preserve-3d;
+-moz-transform-style: preserve-3d;
+-o-transform-style: preserve-3d;
+-ms-transform-style: preserve-3d;
+-webkit-transform-style: preserve-3d;
+opacity: 0;
+z-index: 1;
+}
+.info-window {
+right: 35px;
+top: 75px;
+-webkit-transform-origin: 100% 0;
+-moz-transform-origin: 100% 0;
+-ms-transform-origin: 100% 0;
+-o-transform-origin: 100% 0;
+transform-origin: 100% 0;
+-webkit-transform-origin: 100% 0;
+transform: rotateY(60deg);
+-moz-transform: rotateY(60deg);
+-webkit-transform: rotateY(60deg);
+-o-transform: rotateY(60deg);
+-ms-transform: rotateY(60deg);
+z-index: -1;
+}
+
+.taksit-fiyat{
+
+font-weight:bold;
+
+}
+.info-window {
+background: #fff;
+position: absolute;
+padding: 5px!important;
+-webkit-border-radius: 7px;
+-ms-border-radius: 7px;
+-o-border-radius: 7px;
+border-radius: 7px;
+border: 1px solid #3765b0!important;
+-webkit-transition: all .2s ease-in-out;
+-moz-transition: all .2s ease-in-out;
+-ms-transition: all .2s ease-in-out;
+-o-transition: all .2s ease-in-out;
+transition: all .2s ease-in-out;
+transform-style: preserve-3d;
+-moz-transform-style: preserve-3d;
+-o-transform-style: preserve-3d;
+-ms-transform-style: preserve-3d;
+-webkit-transform-style: preserve-3d;
+opacity: 0;
+z-index: 1;
+}
+.arrow-info {
+width: 0;
+height: 0;
+border-bottom: 10px solid transparent;
+border-top: 10px solid transparent;
+border-left: 10px solid #3765b0;
+font-size: 0;
+line-height: 0;
+position: absolute;
+right: -10px;
+top: 15px;
+}
