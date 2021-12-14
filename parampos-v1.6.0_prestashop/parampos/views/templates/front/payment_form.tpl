@@ -90,7 +90,7 @@
 
             <input type='hidden' name='PARAM_ACCESSCODE' value='{$AccessCode|escape:'htmlall':'UTF-8'}' />
             <input type='hidden' name='PARAM_PAYMENTTYPE' value='creditcard' />
-            <button type="submit" class="paramposode" href="javascript:;" style=""><span class="paramposOdemeTutar">{$total}</span><span class="paramposOdemeText">ÖDE</span></button>
+            <button type="submit" class="paramposode" href="javascript:;" style=""><span class="paramposOdemeText">ÖDE</span></button>
 
             {capture name="capture_name"}{$InstallmentUrl}{/capture}
     </div>
