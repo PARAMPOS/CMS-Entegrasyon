@@ -192,6 +192,26 @@ function param_init_gateway_class() {
 						'merchant' => 'Firma Pos Oranları'
 					)
 				),
+                'pos_limit' => array(
+                    'title' => 'Taksit Kısıtlaması',
+                    'description' => 'Lütfen aktif etmek istediğiniz taksit sayısını seçiniz',
+                    'type' => 'select',
+                    'default' => 'user',
+                    'options' => array(
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                        '5' => '5',
+                        '6' => '6',
+                        '7' => '7',
+                        '8' => '8',
+                        '9' => '9',
+                        '10' => '10',
+                        '11' => '11',
+                        '12' => '12',
+                    )
+                ),
 				'debug' => array(
 					'title'       => 'Debug',
 					'type'        => 'checkbox',
@@ -682,7 +702,7 @@ function get_bank_installments() {
 			$installment = [];
 			foreach ($response as $key => $resp) {
 				if ($resp[0]["SanalPOS_ID"] == $posId) { 
-					$installmentIndex = 12;
+					$installmentIndex =   $paramGateway->settings['pos_limit'];;
 					for($i = 1; $i <= $installmentIndex; $i++) {
 						$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
 						$rate = $resp[0]["MO_$prerate"];
