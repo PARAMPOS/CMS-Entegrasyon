@@ -509,7 +509,7 @@ class Parampos extends PaymentModule
                 $rate = $installment[1];
                 $amount = number_format((1 + ($rate / 100)) *  $amount, 2, ',', '');
                 $fee = (float) ($rate / 100) * $amount;
-                $message = 'Takist: ' . $installment[0]. "\n";
+                $message = 'Taksit: ' . $installment[0]. "\n";
                 $message .= 'Komisyon Oranı: %' . $installment[1] . "\n";
                 $message .= 'Komisyon Tutarı: ' . number_format(round($fee, 2), 2, ',', '') . $currency->iso_code . "\n";
                 $message .= 'Tahsil Edilen Toplam Tutar: ' 	. number_format($amount + $fee, 2, ',', '') . $currency->iso_code ."\n";

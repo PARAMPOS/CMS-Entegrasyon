@@ -75,7 +75,7 @@ class InstallmentForMerchant extends Client
         $data = @simplexml_load_string($xmlStr);
         $list = $data->diffgram->NewDataSet;
         $installmentsArr = [];
-        foreach ($list->DT_Ozel_Oranlar_SK as $instData){
+        foreach ($list->DT_Ozel_Oranlar as $instData){
             $installmentsArr[strtoupper($instData->Kredi_Karti_Banka)] = [(array)$instData];
         }
         return $installmentsArr;
