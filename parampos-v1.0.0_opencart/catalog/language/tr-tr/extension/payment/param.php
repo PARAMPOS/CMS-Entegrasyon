@@ -1,6 +1,6 @@
 <?php
 
-$_['text_title'] = 'Kredi kartı ile öde.';
+$_['text_title'] = 'Param POS (Turkpos) ile Öde)';
 $_['text_credit_card'] = 'Kredi kartı detayları';
 $_['text_testing'] = 'Bu ödeme ağ geçidi şu anda deneniyor. Kredi kartınızdan ödeme alınmayacaktır. <br /> Bu gerçek bir siparişse, lütfen şu anda alternatif bir ödeme yöntemi kullanın. ';
 
