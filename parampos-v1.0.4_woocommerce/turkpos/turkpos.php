@@ -488,7 +488,10 @@ function order_complate( $orderId ) {
  */
 function param_pos_order_details($orderId)
 {
-	if (!$transaction = @Transaction::getTransactionByOrderId($orderId))
+
+    $tr = new Transaction();
+    $orderTransaction = $tr->getTransactionByOrderId($orderId);
+    if (!$transaction =  $orderTransaction)
 		return false;
 	$ui = new OrderView();
 	echo $ui->displayAdminOrder($transaction);
