@@ -30,7 +30,7 @@ class Pay3d extends Client
             )
         ];
         $client = new \SoapClient($this->serviceUrl, $options);
-
+        global $WOOCS;
         $currency = get_option('woocommerce_currency');
         if($currency == 'USD' || $currency == 'EUR' || $WOOCS->current_currency == 'EUR' || $WOOCS->current_currency == 'USD')
         {
