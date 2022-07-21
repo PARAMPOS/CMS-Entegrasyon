@@ -32,7 +32,7 @@ class Pay3d extends Client
         $client = new \SoapClient($this->serviceUrl, $options);
 
         $currency = get_option('woocommerce_currency');
-        if($currency == 'USD' || $currency == 'EUR')
+        if($currency == 'USD' || $currency == 'EUR' || $WOOCS->current_currency == 'EUR' || $WOOCS->current_currency == 'USD')
         {
             $saleObj = new TP_Islem_Odeme_WD($this->clientCode,$this->clientUsername,$this->clientPassword,$vPosId,$this->guid,
             $cardHolder,$cardNumber,$cardExpMonth,$cardExpYear,$cvc,$cardHolderPhone,$failUrl,$successURL,$orderId,

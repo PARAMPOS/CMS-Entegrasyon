@@ -18,4 +18,8 @@
 * Param.com.tr'ye giriş yaparak entegrasyon bilgilerim kısmından gerekli bilgileri alın ve yapılandırma kısmına girin.
 * Modulü kaydedin ve kapatın, ödeme sisteminiz başarı ile kuruldu.
 
+#USD EUR VE DÖVİZ ÖDEMELERİ
+* Modül WOOCS – Currency Switcher for WooCommerce modulu ile uyumludur.
+* Wocs Linki : https://tr.wordpress.org/plugins/woocommerce-currency-switcher
+
 

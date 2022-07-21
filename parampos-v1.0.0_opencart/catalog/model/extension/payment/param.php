@@ -280,6 +280,41 @@ class ModelExtensionPaymentParam extends Model {
 	 * @param [type] $request
 	 * @return void
 	 */
+
+
+	///////////ÖZEL ORANLAR SK
+
+//    private function getBinQuote($request)
+//    {
+//        $client = $this->_createSoapClient($this->getApiUrl(), 0);
+//        $quoteResponse = $client->TP_Ozel_Oran_Liste($request);
+//        if(isset($quoteResponse->TP_Ozel_Oran_ListeResult))
+//        {
+//            $q1 = $quoteResponse->TP_Ozel_Oran_ListeResult;
+//            $Sonuc = $q1->{'Sonuc'};
+//            $Sonuc_Str = $q1->{'Sonuc_Str'};
+//            if($Sonuc <= 0){
+//                return [
+//                    'Sonuc' => $Sonuc,
+//                    'Sonuc_Str' => $Sonuc_Str,
+//                ];
+//            }
+//            $DT_Bilgi = $q1->{'DT_Bilgi'};
+//            $xml = $DT_Bilgi->{'any'};
+/*            $xmlStr = '<?xml version=\'1.0\' standalone=\'yes\'?><root>'.$xml.'</root>';*/
+//            $xmlStr = str_replace(array("diffgr:","msdata:"),'', $xmlStr);
+//            $data = @simplexml_load_string($xmlStr);
+//            $list = $data->diffgram->NewDataSet;
+//            $installmentsArr = [];
+//            foreach ($list->DT_Ozel_Oranlar as $instData){
+//                $installmentsArr[strtoupper($instData->Kredi_Karti_Banka)] = [(array)$instData];
+//            }
+//
+//            return $installmentsArr;
+//
+//        }
+//    }
+
 	private function getBinQuote($request)
 	{
 		$client = $this->_createSoapClient($this->getApiUrl(), 0);
