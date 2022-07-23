@@ -121,6 +121,7 @@ class ParamAPI
 	public function getInstallments($request, $cart)
 	{
         $amount = number_format($cart->getOrderTotal(), 2, '.', '');
+        $amountx = number_format($cart->getOrderTotal(), 2, '.', '');
 		$currency = new Currency((int)$cart->id_currency);
 		$request->BIN = (strlen($request->BIN) >= 6)?substr($request->BIN, 0, 6):'';
 		$posId = $this->getBinPOS($request);
@@ -141,7 +142,7 @@ class ParamAPI
 						if(!floatval($rate) || floatval($rate) < 0)
 							continue;
 						
-						$amount = (float) (1 + ($rate / 100)) *  $amount;
+						$amount = (float) (1 + ($rate / 100)) *  $amountx;
 						$fee = (float) ($rate / 100) * $amount;
 						$installment[$i]['month'] = $prerate;
 						$installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
