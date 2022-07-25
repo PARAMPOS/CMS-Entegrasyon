@@ -44,7 +44,7 @@
     <div class="col-md-1">/</div>
     <div class="col-md-2">
         <select class="form-control form-control-select" id="PARAM_CARDEXPIRYYEAR" name="PARAM_CARDEXPIRYYEAR">
-            {section name=date_y start=21 loop=28}
+            {section name=date_y start=21 loop=40}
                 <option value="{$smarty.section.date_y.index|escape:'htmlall':'UTF-8'}">{$smarty.section.date_y.index|escape:'htmlall':'UTF-8'}</option>
             {/section}
         </select>
