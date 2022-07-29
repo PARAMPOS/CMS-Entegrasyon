@@ -482,7 +482,25 @@ class Parampos extends PaymentModule
                 Context::getContext()->cart = new Cart((int)Tools::getValue('cart'));
             }
             $cart = Context::getContext()->cart;
+
             $currency = new Currency((int)$cart->id_currency);
+             if ($currency->iso_code == 'TRY') {
+
+                $doviz = '1000';
+
+             }
+
+             else if ($currency->iso_code == 'USD') {
+
+                $doviz = '1001';
+
+             }
+
+                else if ($currency->iso_code == 'EUR') {
+
+                $doviz = '1002';
+
+             }
            
             $amount = number_format($cart->getOrderTotal(), 2, ',', '');
             
@@ -509,7 +527,7 @@ class Parampos extends PaymentModule
                 $rate = $installment[1];
                 $amount = number_format((1 + ($rate / 100)) *  $amount, 2, ',', '');
                 $fee = (float) ($rate / 100) * $amount;
-                $message = 'Taksit: ' . $installment[0]. "\n";
+                $message = 'Takist: ' . $installment[0]. "\n";
                 $message .= 'Komisyon Oranı: %' . $installment[1] . "\n";
                 $message .= 'Komisyon Tutarı: ' . number_format(round($fee, 2), 2, ',', '') . $currency->iso_code . "\n";
                 $message .= 'Tahsil Edilen Toplam Tutar: ' 	. number_format($amount + $fee, 2, ',', '') . $currency->iso_code ."\n";
@@ -520,6 +538,9 @@ class Parampos extends PaymentModule
                 $result->Data2 = '';
             }
 
+
+
+            $result->Doviz_Kodu = $doviz;       
             $result->Islem_Tutar = $amount;
             $result->Toplam_Tutar = $amount;
             $result->Islem_Hash = '';
@@ -540,8 +561,17 @@ class Parampos extends PaymentModule
             $result->Data9 = '';
             $result->Data10 = '';
             //Dim Islem_Guvenlik_Str$ = CLIENT_CODE & GUID & Taksit & Islem_Tutar & Toplam_Tutar & Siparis_ID & Hata_URL & Basarili_URL
-            $Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID . $result->Taksit . $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
+
+               if ($currency->iso_code == 'TRY') { 
+            $Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID  .  $result->Taksit .  $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
+
+        }
+
+        else {
+
+             $Islem_Guvenlik_Str = $result->G->CLIENT_CODE . $result->GUID  .  $result->Islem_Tutar . $result->Toplam_Tutar . $result->Siparis_ID . $result->Hata_URL . $result->Basarili_URL;
         
+        }
             // Call ParamAPI
             $param_params = array();
             if ($sandbox) {

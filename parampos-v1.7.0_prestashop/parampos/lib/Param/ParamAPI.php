@@ -87,7 +87,16 @@ class ParamAPI
      */
     public function getPaymentRequest($result, $secureString) 
 	{
-		try {
+
+
+           global $currency;
+           $my_currency_iso_code = $currency->iso_code;
+
+
+           if ($currency->iso_code == 'TRY') {
+
+
+           	try {
 			$client = $this->_createSoapClient($this->url, 0);
 			$response = $client->SHA2B64(array('Data' => $secureString));
 			$result->Islem_Hash = $response->SHA2B64Result;
@@ -110,6 +119,43 @@ class ParamAPI
 			}
 		} catch (\Exception $e) {
 			throw new \Exception($e->getMessage());
+		}
+
+		
+		}
+
+		else {
+
+
+try {
+			$client = $this->_createSoapClient($this->url, 0);
+			$response = $client->SHA2B64(array('Data' => $secureString));
+			$result->Islem_Hash = $response->SHA2B64Result;
+			$response = $client->TP_Islem_Odeme_WD($result);
+			if($response->TP_Islem_Odeme_WDResult->Sonuc > 0){
+                Tools::redirect($response->TP_Islem_Odeme_WDResult->UCD_URL);
+			} else {
+                $checkout_type = Configuration::get('PS_ORDER_PROCESS_TYPE') ?
+                'order-opc' : 'order';
+
+                $url = _PS_VERSION_ >= '1.5' ?
+                    'index.php?controller='.$checkout_type.'&' : $checkout_type.'.php?';
+
+                $url .= 'step=3&cgv=1&paramerror=1&message='.$response->TP_Islem_Odeme_WDResult->Sonuc_Str;
+
+                if (Configuration::get('PS_ORDER_PROCESS_TYPE') == 'order-opc') {
+                    $url.'#param';
+                }
+                Tools::redirect($url);
+			}
+		} catch (\Exception $e) {
+			throw new \Exception($e->getMessage());
+		}
+
+
+
+
+
 		}
     }
 

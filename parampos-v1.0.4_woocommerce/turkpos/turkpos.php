@@ -252,7 +252,7 @@ function param_init_gateway_class()
                 $lang = [
                     'name' => 'Kart Sahibi Adı Soyadı',
                     'cart_no' => 'Kredi Kartı Numarası',
-                    'cart_date' => 'SKT',
+                    'cart_date' => 'AY/YIL',
                     'cvv' => 'CVV',
                     'installment' => 'Taksit Seçimi',
                     'choise' => '-- Lütfen Seçiniz --',
@@ -415,7 +415,7 @@ function param_init_gateway_class()
                 $lang = [
                     'name' => 'Kart Sahibi Adı Soyadı',
                     'cart_no' => 'Kredi Kartı Numarası',
-                    'cart_date' => 'SKT',
+                    'cart_date' => 'AY/YIL',
                     'cvv' => 'CVV',
                     'installment' => 'Taksit Seçimi',
                     'choise' => '-- Lütfen Seçiniz --',
