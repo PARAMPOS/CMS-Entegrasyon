@@ -176,7 +176,7 @@ function param_init_gateway_class()
                 'tek_cekim' => array(
                     'title' => 'Tek Çekim Komisyon Dahil',
                     'type' => 'checkbox',
-                    'description' => 'Tek çekimde komisyonu firma',
+                    'description' => 'Tek çekimde komisyonu firma öder',
                     'default' => 'no'
                 ),
 
