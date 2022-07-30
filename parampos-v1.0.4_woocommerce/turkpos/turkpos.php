@@ -173,7 +173,14 @@ function param_init_gateway_class()
                     'type' => 'text',
                     'default' => 'https://test-dmz.param.com.tr:4443/turkpos.ws/service_turkpos_test.asmx?wsdl',
                 ),
-                'installment' => array(
+                'tek_cekim' => array(
+                    'title' => 'Tek Çekim Komisyon Dahil',
+                    'type' => 'checkbox',
+                    'description' => 'Tek çekimde komisyonu firma',
+                    'default' => 'no'
+                ),
+
+                 'installment' => array(
                     'title' => 'Taksit Seçimi',
                     'type' => 'checkbox',
                     'description' => 'Ödeme yaparken taksitleri göster.',
@@ -252,8 +259,8 @@ function param_init_gateway_class()
                 $lang = [
                     'name' => 'Kart Sahibi Adı Soyadı',
                     'cart_no' => 'Kredi Kartı Numarası',
-                    'cart_date' => 'AY/YIL',
-                    'cvv' => 'CVV',
+                    'cart_date' => 'SKT',
+                    'cvv' => 'SKT',
                     'installment' => 'Taksit Seçimi',
                     'choise' => '-- Lütfen Seçiniz --',
                     'cart_name' => 'Ad Soyad',
@@ -290,10 +297,10 @@ function param_init_gateway_class()
             // Show/Hide installment table
             if ($this->installment == 'yes') {
                 $installmentHtml = '<div class="clearfix"></div>
-				<p class="form-row">
-					<a href="#popup-content" id="inst-link">'.$lang['all_installment'].'</a>
-					<div id="popup-content" class="white-popup mfp-hide"></div>
-				</p>';
+                <p class="form-row">
+                    <a href="#popup-content" id="inst-link">'.$lang['all_installment'].'</a>
+                    <div id="popup-content" class="white-popup mfp-hide"></div>
+                </p>';
             } else {
                 $installmentHtml = '';
             }
@@ -311,57 +318,57 @@ function param_init_gateway_class()
             echo '<div class="card-wrapper"></div>
 
             
-			
-			<p class="form-row form-row-wide" id="cc_name_field">
-				<label for="cc_name" class="">'.$lang['name'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
-				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text " name="cc_name" id="ccpp_creditcard_name_on_card" placeholder="'.$lang['name'].'" value="" autocomplate="off">
-				</span>
-			</p>
+            
+            <p class="form-row form-row-wide" id="cc_name_field">
+                <label for="cc_name" class="">'.$lang['name'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <span class="woocommerce-input-wrapper">
+                    <input type="text" class="input-text " name="cc_name" id="ccpp_creditcard_name_on_card" placeholder="'.$lang['name'].'" value="" autocomplate="off">
+                </span>
+            </p>
 
-			<p class="form-row form-row-wide" id="cc_number_field">
-				<label for="cc_number" class="">'.$lang['cart_no'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
-				<span class="woocommerce-input-wrapper">
-					<input type="tel" class="input-text" name="cc_number" id="ccpp_creditcard_cc_number" placeholder="'.$lang['cart_no'].'" value="" autocomplete="off">
-				</span>
-			</p>
+            <p class="form-row form-row-wide" id="cc_number_field">
+                <label for="cc_number" class="">'.$lang['cart_no'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <span class="woocommerce-input-wrapper">
+                    <input type="tel" class="input-text" name="cc_number" id="ccpp_creditcard_cc_number" placeholder="'.$lang['cart_no'].'" value="" autocomplete="off">
+                </span>
+            </p>
 
-			<p class="form-row form-row-first" id="cc_expiry_field">
-				<label for="cc_expiry" class="">'.$lang['cart_date'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
-				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="'.$lang['cart_date'].'" value="" autocomplete="off">
-				</span>
-			</p>
+            <p class="form-row form-row-first" id="cc_expiry_field">
+                <label for="cc_expiry" class="">'.$lang['cart_date'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <span class="woocommerce-input-wrapper">
+                    <input type="text" class="input-text valid" name="cc_expiry" id="ccpp_creditcard_expiration" placeholder="'.$lang['cart_date'].'" value="" autocomplete="off">
+                </span>
+            </p>
 
-			<p class="form-row form-row-last " id="cc_cvv_field">
-				<label for="cc_cvv" class="">'.$lang['cvv'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
-				<span class="woocommerce-input-wrapper">
-					<input type="text" class="input-text " name="cc_cvv" id="ccpp_creditcard_cc_cid" placeholder="'.$lang['cvv'].'" value="" autocomplete="off">
-				</span>
-			</p>
-			
-			<p class="form-row form-row-wide hidden" id="cc_installment_field">
-				<label for="cc_installment" class="">'.$lang['i$this->installment'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
-				<span class="woocommerce-input-wrapper">
-					<select name="cc_installment" class="form-control" id ="ccpp_creditcard_cc_installment">
-						<option value="">'.$lang['choise'].'</option>
-					</select>
-				</span>
-				' . $installmentHtml . '
-			</p>';
+            <p class="form-row form-row-last " id="cc_cvv_field">
+                <label for="cc_cvv" class="">'.$lang['cvv'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <span class="woocommerce-input-wrapper">
+                    <input type="text" class="input-text " name="cc_cvv" id="ccpp_creditcard_cc_cid" placeholder="'.$lang['cvv'].'" value="" autocomplete="off">
+                </span>
+            </p>
+            
+            <p class="form-row form-row-wide hidden" id="cc_installment_field">
+                <label for="cc_installment" class="">'.$lang['i$this->installment'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <span class="woocommerce-input-wrapper">
+                    <select name="cc_installment" class="form-control" id ="ccpp_creditcard_cc_installment">
+                        <option value="">'.$lang['choise'].'</option>
+                    </select>
+                </span>
+                ' . $installmentHtml . '
+            </p>';
             echo "<script type='text/javascript'>var card = new Card({ form: '.woocommerce-checkout', container: '.card-wrapper',formatting: true,placeholders: {
-				number: '•••• •••• •••• ••••',
-				name: '".$lang['name']."',
-				expiry: '••/••',
-				cvc: '•••'
-			},masks: {
-				cardNumber: '•' // optional - mask card number
-			},formSelectors: {
-				numberInput: 'input#ccpp_creditcard_cc_number', 
-				expiryInput: 'input#ccpp_creditcard_expiration', 
-				cvcInput: 'input#ccpp_creditcard_cc_cid',
-				nameInput: 'input#ccpp_creditcard_name_on_card' 
-			}, })</script>";
+                number: '•••• •••• •••• ••••',
+                name: '".$lang['name']."',
+                expiry: '••/••',
+                cvc: '•••'
+            },masks: {
+                cardNumber: '•' // optional - mask card number
+            },formSelectors: {
+                numberInput: 'input#ccpp_creditcard_cc_number', 
+                expiryInput: 'input#ccpp_creditcard_expiration', 
+                cvcInput: 'input#ccpp_creditcard_cc_cid',
+                nameInput: 'input#ccpp_creditcard_name_on_card' 
+            }, })</script>";
             do_action('woocommerce_credit_card_form_end', $this->id);
             echo '<div class="clearfix"></div></div>';
         }
@@ -415,8 +422,8 @@ function param_init_gateway_class()
                 $lang = [
                     'name' => 'Kart Sahibi Adı Soyadı',
                     'cart_no' => 'Kredi Kartı Numarası',
-                    'cart_date' => 'AY/YIL',
-                    'cvv' => 'CVV',
+                    'cart_date' => 'SKT',
+                    'cvv' => 'SKT',
                     'installment' => 'Taksit Seçimi',
                     'choise' => '-- Lütfen Seçiniz --',
                     'cart_name' => 'Ad Soyad',
@@ -644,11 +651,30 @@ function checkout_billing_email_js_ajax()
                                 $('.custom-spinner').remove();
                                 var data = jQuery.parseJSON(result);
                                 if (Object.keys(data).length > 0) {
+
                                     $.each(data, function (index, value) {
-                                        $('#ccpp_creditcard_cc_installment').append($('<option>', {
+if (index < 2) {
+ $('#ccpp_creditcard_cc_installment').append($('<option>', {
+                                            value: index + '|' + value.rate + '|' + value.fee,
+                                            text: ' Tek Çekim - %' + value.rate + ' Komisyon - Genel Toplam ' + value.total_pay
+                                        }));
+
+}
+
+else {
+
+
+    $('#ccpp_creditcard_cc_installment').append($('<option>', {
                                             value: index + '|' + value.rate + '|' + value.fee,
                                             text: index + ' Taksit - %' + value.rate + ' Komisyon - Genel Toplam ' + value.total_pay
                                         }));
+}
+
+                                       
+
+
+
+
                                     });
                                 } else {
                                     $('#cc_installment_field').addClass('hidden');
@@ -706,14 +732,14 @@ function get_bank_installments()
 
         $html =
             '<table id="installment-table" class="table table-hover">
-			<thead>
-				<tr><th class="col-sm-1"></th><th>Banka</th>
-					<th>3 Taksit</th>
-					<th>6 Taksit</th>
-					<th>9 Taksit</th>
-					<th>12 Taksit</th>
-				</tr>
-			</thead>';
+            <thead>
+                <tr><th class="col-sm-1"></th><th>Banka</th>
+                    <th>3 Taksit</th>
+                    <th>6 Taksit</th>
+                    <th>9 Taksit</th>
+                    <th>12 Taksit</th>
+                </tr>
+            </thead>';
         $calcData = [];
         foreach ($response as $key => $obj):
             $installmentIndex = 12;
@@ -731,14 +757,14 @@ function get_bank_installments()
             }
             if (isset($calcData[$key])) {
                 $html .= '
-				<tr class="sanalPosID" rel="' . $obj[0]['SanalPOS_ID'] . '">
-					<td class="col-sm-1"><img src="' . $obj[0]['Kredi_Karti_Banka_Gorsel'] . '"></td>
-					<td>' . $obj[0]['Kredi_Karti_Banka'] . '</td>
-					<td class="oranCol"><label>%' . floatval($calcData[$key]['03']['rate']) . '</label><div><span class="price">' . $calcData[$key]['03']['amount'] . '</span></div></td>
-					<td class="oranCol"><label>%' . floatval($calcData[$key]['06']['rate']) . '</label><div><span class="price">' . $calcData[$key]['06']['amount'] . '</span></div></td>
-					<td class="oranCol"><label>%' . floatval($calcData[$key]['09']['rate']) . '</label><div><span class="price">' . $calcData[$key]['09']['amount'] . '</span></div></td>
-					<td class="oranCol"><label>%' . floatval($calcData[$key]['12']['rate']) . '</label><div><span class="price">' . $calcData[$key]['12']['amount'] . '</span></div></td>
-				</tr>';
+                <tr class="sanalPosID" rel="' . $obj[0]['SanalPOS_ID'] . '">
+                    <td class="col-sm-1"><img src="' . $obj[0]['Kredi_Karti_Banka_Gorsel'] . '"></td>
+                    <td>' . $obj[0]['Kredi_Karti_Banka'] . '</td>
+                    <td class="oranCol"><label>%' . floatval($calcData[$key]['03']['rate']) . '</label><div><span class="price">' . $calcData[$key]['03']['amount'] . '</span></div></td>
+                    <td class="oranCol"><label>%' . floatval($calcData[$key]['06']['rate']) . '</label><div><span class="price">' . $calcData[$key]['06']['amount'] . '</span></div></td>
+                    <td class="oranCol"><label>%' . floatval($calcData[$key]['09']['rate']) . '</label><div><span class="price">' . $calcData[$key]['09']['amount'] . '</span></div></td>
+                    <td class="oranCol"><label>%' . floatval($calcData[$key]['12']['rate']) . '</label><div><span class="price">' . $calcData[$key]['12']['amount'] . '</span></div></td>
+                </tr>';
             }
         endforeach;
         $html .= '<tbody></table>';
@@ -768,6 +794,13 @@ function get_bank_installments()
             $response = $cc->send()->fetchInstallment();
 
             $installment = [];
+
+             $paramGateway = new WC_Param_Gateway();
+    // Only on Checkout
+    global $woocommerce;
+    $tek_cekim = $paramGateway->settings['installment'];
+
+
             foreach ($response as $key => $resp) {
                 if ($resp[0]["SanalPOS_ID"] == $posId) {
                     $installmentIndex = $paramGateway->settings['pos_limit'];;
@@ -776,6 +809,19 @@ function get_bank_installments()
                         $rate = $resp[0]["MO_$prerate"];
                         if (floatval($rate) < 0)
                             continue;
+if ($paramGateway->settings['tek_cekim'] == 'yes' & $i == 1) {
+                        $rate = 0;
+                         $subtotal = (float)$woocommerce->cart->total;
+                        $amount = (float)(1 + ($rate / 100)) * $subtotal;
+                        $fee = (float)($rate / 100) * $subtotal;
+                        $installment[$i]['month'] = $prerate;
+                        $installment[$i]['rate'] = $rate;
+                        $installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $cur_name;
+                        $installment[$i]['fee'] = 0;
+
+}
+
+else {
 
                         $subtotal = (float)$woocommerce->cart->total;
                         $amount = (float)(1 + ($rate / 100)) * $subtotal;
@@ -784,6 +830,12 @@ function get_bank_installments()
                         $installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
                         $installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $cur_name;
                         $installment[$i]['fee'] = number_format($fee, 2);
+
+
+}
+
+
+                       
                     }
                 }
             }
