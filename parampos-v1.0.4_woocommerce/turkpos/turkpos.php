@@ -348,7 +348,7 @@ function param_init_gateway_class()
             </p>
             
             <p class="form-row form-row-wide hidden" id="cc_installment_field">
-                <label for="cc_installment" class="">'.$lang['i$this->installment'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
+                <label for="cc_installment" class="">'.$lang['$this->installment'].'&nbsp;<abbr class="required" title="required">*</abbr></label>
                 <span class="woocommerce-input-wrapper">
                     <select name="cc_installment" class="form-control" id ="ccpp_creditcard_cc_installment">
                         <option value="">'.$lang['choise'].'</option>
@@ -551,6 +551,8 @@ function order_complate($orderId)
         $order->add_order_note('Ödeme Param POS ile tamamlandı. İşlem no: #' . $orderTransaction->trId);
         $order->payment_complete();
         WC()->cart->empty_cart();
+        WC()->cart->empty_cart(true);
+        WC()->session->set('cart', array());
     }
 }
 
