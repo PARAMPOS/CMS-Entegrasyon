@@ -27,7 +27,7 @@
   <div class="form-group row">
     <label for="PARAM_CARDNUMBER" class="col-md-3 form-control-label required">{l s='Kart Numarası' mod='parampos'}</label>
     <div class="col-md-6">
-        <input type="text" class="form-control" name="PARAM_CARDNUMBER" id='PARAM_CARDNUMBER' autocomplete="cc-number" size="30" maxlength="16" pattern="\d*" />
+        <input type="text" class="form-control" name="PARAM_CARDNUMBER" id='PARAM_CARDNUMBER' autocomplete="cc-number" size="30" maxlength="19" pattern="\d*" />
         <span id="paramnumber_error" class="error_msg"></span>
     </div>
   </div>

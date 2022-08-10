@@ -430,42 +430,6 @@ class Parampos extends PaymentModule
         return $this->context->smarty->fetch($this->local_path.'/views/templates/hook/confirmation.tpl');
     }
 
-
-    private function SameSiteCook($name, $value, $expire, $path, $domain, $secure, $httponly) {
-
-        if (PHP_VERSION_ID < 70300) {
-
-            setcookie($name, $value, $expire, "$path; samesite=None", $domain, $secure, $httponly);
-        }
-        else {
-            setcookie($name, $value, [
-                'expires' => $expire,
-                'path' => $path,
-                'domain' => $domain,
-                'samesite' => 'None',
-                'secure' => $secure,
-                'httponly' => $httponly
-            ]);
-
-
-        }
-    }
-
-
-    private function samesite(){
-
-        $checkCookieNames = array('PHPSESSID','OCSESSID','default','PrestaShop-','wp_woocommerce_session_');
-
-        foreach ($_COOKIE as $cookieName => $value) {
-            foreach ($checkCookieNames as $checkCookieName){
-                if (stripos($cookieName,$checkCookieName) === 0) {
-                    $this->SameSiteCook($cookieName,$_COOKIE[$cookieName], time() + 86400, "/", $_SERVER['SERVER_NAME'],true, true);
-                }
-            }
-        }
-    }
-
-
     public function getAccessCodeResult()
     {
         $sandbox = Configuration::get('PARAM_SANDBOX');
@@ -509,9 +473,6 @@ class Parampos extends PaymentModule
 
         if(Tools::getValue('AccessCode')) 
         {
-
-            $this->samesite();
-
             $redirect_url = (Configuration::get('PS_SSL_ENABLED') ? 'https' : 'http')
             .'://'.$_SERVER['HTTP_HOST'].__PS_BASE_URI__.'modules/'.$this->name.'/param.php';
             $ref_url = (Configuration::get('PS_SSL_ENABLED') ? 'https' : 'http')

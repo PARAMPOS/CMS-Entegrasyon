@@ -1,0 +1,83 @@
+p.payment_module a.param-iframe { background: #fbfbfb url("../img/card.png") no-repeat scroll 15px 15px; }
+p.payment_module a.param-iframe:hover { background-color: #f6f6f6; }
+p.payment_module a.param-iframe::after { color: #777; content: ""; display: block; font-family: "FontAwesome"; font-size: 25px; height: 22px; margin-top: -11px; position: absolute; right: 15px; top: 50%; width: 14px; }
+
+#HOOK_PAYMENT #param_payment_module {padding: 20px 10px 20px 15px;}
+#HOOK_PAYMENT #param_payment_module {border: 1px solid #d6d4d4; border-radius: 4px;}
+#HOOK_PAYMENT #submit_payment {background-image: linear-gradient(#00D02A, #19B700); color: white; border: 2px solid #F9F7F7;}
+#HOOK_PAYMENT #submit_payment:hover,
+#HOOK_PAYMENT #submit_payment:active {background-position: initial; background-image: linear-gradient(#03E531, #19B700);}
+.error_msg { color:#f00; font-size: 10px; display: block;}
+.hidden {display:none !important; }
+@-webkit-keyframes spinner-border {
+    /*!rtl:ignore*/to {
+    -webkit-transform:rotate(1turn);
+    transform:rotate(1turn)
+    }
+  }
+  @keyframes spinner-border {
+    /*!rtl:ignore*/to {
+    -webkit-transform:rotate(1turn);
+    transform:rotate(1turn)
+    }
+  }
+  .spinner-border {
+    display:inline-block;
+    width:2rem;
+    height:2rem;
+    vertical-align:text-bottom;
+    border:.25em solid;
+    border-right:.25em solid transparent;
+    border-radius:50%;
+    -webkit-animation:spinner-border .75s linear infinite;
+    animation:spinner-border .75s linear infinite
+  }
+  .spinner-border-sm {
+    width:1rem;
+    height:1rem;
+    border-width:.2em
+  }
+  @-webkit-keyframes spinner-grow {
+    0% {
+    -webkit-transform:scale(0);
+    transform:scale(0)
+    }
+    50% {
+    opacity:1;
+    -webkit-transform:none;
+    transform:none
+    }
+  }
+  @keyframes spinner-grow {
+    0% {
+    -webkit-transform:scale(0);
+    transform:scale(0)
+    }
+    50% {
+    opacity:1;
+    -webkit-transform:none;
+    transform:none
+    }
+  }
+  .spinner-grow {
+    display:inline-block;
+    width:2rem;
+    height:2rem;
+    vertical-align:text-bottom;
+    background-color:currentColor;
+    border-radius:50%;
+    opacity:0;
+    -webkit-animation:spinner-grow .75s linear infinite;
+    animation:spinner-grow .75s linear infinite
+  }
+  .spinner-grow-sm {
+    width:1rem;
+    height:1rem
+  }
+  @media(prefers-reduced-motion:reduce) {
+    .spinner-border,
+    .spinner-grow {
+    -webkit-animation-duration:1.5s;
+    animation-duration:1.5s
+    }
+  }
