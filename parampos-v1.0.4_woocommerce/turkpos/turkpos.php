@@ -237,15 +237,27 @@ function param_init_gateway_class()
          * @param [type] $orderId
          * @return void
          */
-        public function payment_response($orderId)
-        {
-            $helper = new Data();
-            $result = $helper->validateTransactionResponse($orderId, $_POST);
-            if ($result['error']) {
-                wc_add_notice($result['message'], 'error');
-                return wp_redirect(wc_get_checkout_url());
-            }
-        }
+        // Ödeme ağ geçidi işlemi sonucunda ve sipariş iptali işlevi
+function payment_response_and_order_cancel($orderId)
+{
+    $helper = new Data();
+    $result = $helper->validateTransactionResponse($orderId, $_POST);
+    if ($result['error']) {
+        wc_add_notice($result['message'], 'error');
+        // Yeni iptal sayfasının URL'sini belirtin ve yönlendirin
+        wp_redirect(home_url('/iptal-sayfasi/')); // "iptal-sayfasi" kısmını kendi sayfanızın slug'ıyla değiştirin.
+        exit; // İşlemi sonlandırın, sayfaya yönlendirildikten sonra devam etmesin.
+    } else {
+        // Siparişi iptal et
+        $order = wc_get_order($orderId);
+        $order->update_status('cancelled');
+        wc_add_notice('Sipariş iptal edildi.', 'success');
+    }
+}
+
+// Ödeme ağ geçidi işlemi sonucunda ve sipariş iptali işlevini çağırın
+add_action('woocommerce_payment_successful_result', 'payment_response_and_order_cancel', 10, 1);
+
 
         /**
          * You will need it if you want your custom credit card form, Step 4 is about it
