@@ -80,7 +80,23 @@ class Autoloader
         include_once $path . '/Model/Gateway/InstallmentForMerchant.php';
         include_once $path . '/Model/Gateway/InstallmentForUser.php';
 
-
+        /*
+        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(dirname(__FILE__)), RecursiveIteratorIterator::SELF_FIRST);
+        $files = [];
+        foreach ($objects as $name => $object) {
+            if ('.' === $object) continue;
+            if ('..' === $object) continue;
+            if (strpos($object->getPathname(), '.php') !== false) {
+                $files[] = $object->getPathname();
+                //include_once $object->getPathname();
+            }
+        }
+        unset($files[0]); //autoload
+        unset($files[1]); //turkpos
+        unset($files[2]); //setup
+        echo '<pre>';
+        var_dump($files);
+        */
     }
 
     /**

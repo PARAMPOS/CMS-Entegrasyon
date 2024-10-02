@@ -35,7 +35,7 @@ class Transaction
 	public $resultCode;
 	public $resultMessage = 'Ödeme yapılmadı.';
 	public $result;
-	public $debug = '';
+	// public $debug = '';
 	public $trCreatedAt;
 	public $trUpdatedAt;
 	public $products = array();
@@ -62,7 +62,7 @@ class Transaction
 
 		WC()->session = new WC_Session_Handler();
 		WC()->session->init();
-		$orderId = WC()->session->get( 'order_awaiting_payment');
+		$orderId = WC()->session->get('order_awaiting_payment');
 		$order = new WC_Order($orderId);
 
 		$this->successUrl = add_query_arg(array('paramres' => 'success'), $order->get_checkout_order_received_url(true));
@@ -193,7 +193,7 @@ class Transaction
 	{
 		global $wpdb;
 		$query = "SELECT * FROM " . _DB_PREFIX_ . "param_transaction WHERE `trId` = $trId";
-		return $wpdb->get_row($q);
+		return $wpdb->get_row($query);
 	}
 
 	public static function createTransaction()
@@ -248,7 +248,7 @@ class Transaction
                         $feeItem->set_tax_class('sifir-oran');
                     }
 					else {
-					    
+
                         $feeItem->set_tax_class('zero-rate');
                     }
 					$feeItem->set_name(sprintf( __('Kredi kartı komisyon farkı %s taksit', 'woocommerce'), wc_clean($installment)));
@@ -256,7 +256,8 @@ class Transaction
 					$order->calculate_totals(true);
 				}
 			}
-			$transaction->installment = $installment;
+            $transaction->installment = $installment;
+            $transaction->rate = $rate; // Rate eklendi.
 			$transaction->cartTotalIncFee = (float) (1 + ($rate / 100)) * $transaction->cartTotalExcFee;
 			$transaction->gatewayFee = (float) ($transaction->cartTotalIncFee - $transaction->cartTotalExcFee);
 
@@ -270,8 +271,8 @@ class Transaction
 			}
 		}
 
-		$transaction->successUrl = add_query_arg(array('paramres' => 'success'), $order->get_checkout_order_received_url(true));
-		$transaction->failUrl = add_query_arg(array('paramres' => 'fail'), $order->get_checkout_payment_url(true));
+		$transaction->successUrl = get_site_url() . "/wc-api/parampos_complete_payment";
+		$transaction->failUrl = get_site_url() . "/wc-api/parampos_complete_payment";
 		$transaction->shopName = get_option('blogname');
 		$transaction->isoLang = get_bloginfo("language");
 

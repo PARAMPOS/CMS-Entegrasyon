@@ -2,6 +2,7 @@
 
 class InitPOS
 {
+    public $version = "2.0.1";
     public function pay($transaction)
     {
         $transaction->tds = true;
@@ -13,20 +14,36 @@ class InitPOS
         $serviceUrl = $transaction->serviceUrl;
         $rate = 0;
 
+
         $bin = new Bin($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
-        $binResponse = $bin->send($transaction->cc_number)->fetchBIN();
+        $binResponse = $bin->send($transaction->ccNumber)->fetchBIN();
 
         $posId = $binResponse["posId"];
         $cc = new InstallmentForUser($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
         $response = $cc->send()->fetchInstallment();
 
         $prerate = str_pad($transaction->installment, 2, '0', STR_PAD_LEFT);
+        /** BU ALANA RESPONSE VEYA IP HATASI DÖNÜYOR BURADA İP HATASI KONTROLÜ YAP RESPONSE DEĞERİ BOŞ GELİYOR. */
 
         foreach ($response as $key => $resp) {
             if ($resp[0]["SanalPOS_ID"] == $posId) {
                 $rate = $resp[0]["MO_$prerate"];
             }
         }
+
+        /**
+         * $transaction->rate = Kullanıcıdan gelen taksit oranı
+         * $rate = Param Servislerinden gelen taksit oranı
+         * Param Servislerinden dönen taksit oranıyla kullanıcıdan gelen taksit oranı eşit değilse hata döner.
+         */
+        $rateCheck = round($rate, 2);
+        if ($transaction->rate != $rateCheck) {
+            $transaction->resultCode = 'ENT - "400"';
+            $transaction->resultMessage = " - Taksit Oranları Hatalı";
+            $transaction->result = false;
+            return $transaction;
+        }
+
 
         if ($rate == -2) {
             $transaction->resultCode = '-1';
@@ -39,8 +56,10 @@ class InitPOS
 
         $rate_edit = (100 + $rate);
         $cartTotal = $transaction->cartTotalIncFee * 100 / $rate_edit;
+
         $amount = $cartTotal + ($cartTotal * $rate / 100);
-        $orderId 	= $transaction->orderId;
+        //Test sipariş'lerin id'leri birbiriyle çakışmaması için rand ve time methodu uygulandı.
+        $orderId 	= $MODE === "TEST" ? $transaction->orderId . "-" . rand(1,1000) . time() : $transaction->orderId;
         $ccOwner	= $transaction->ccName;
         $ccNumber	= $transaction->ccNumber;
         $ccMonth	= str_pad($transaction->ccExpireMonth, 2, "0", STR_PAD_LEFT);
@@ -60,10 +79,12 @@ class InitPOS
             $transaction->tds = true;
             $transaction->saveTransaction();
 
+            //İşlemleri ayırabilmek için
+            $extraData1 = "WooCommerce_V". $this->version . "_" . "Bireysel";
             try {
                 $saleObj = new Pay3d($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $GUID, $MODE, $serviceUrl);
                 $saleObj->send( $posId, $ccOwner, $ccNumber, $ccMonth,  $ccYear, $ccCVV, $phone, $transaction->failUrl, $transaction->successUrl,
-                    $orderId, $transaction->shopName, $installment, $total_cart, $totalAmount, $transactionId, $clientIp, $_SERVER['HTTP_REFERER'], "", "", "", "", ""
+                    $orderId, $transaction->shopName, $installment, $total_cart, $totalAmount, $transactionId, $clientIp, $_SERVER['HTTP_REFERER'], $extraData1, "", "", "", ""
                 );
 
                 $paramResponse = $saleObj->parse();

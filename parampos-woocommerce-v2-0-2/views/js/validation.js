@@ -3,7 +3,7 @@ var types = [
     {
         title: 'Troy',
         type: 'TR',
-        pattern: '^(?:9792|65\d{2}|36|2205)\d{12}$',
+        pattern: '^97\\d*$',
         gaps: [4, 8, 12],
         lengths: [14, 16],
         code: {
@@ -187,8 +187,9 @@ jQuery.validator.addMethod("creditcardtypes", function(value, element, param) {
         return false;
     }
     cardType = potentialTypes[0];
-    
-    if (cardType.type === 'unionpay') {  // UnionPay is not Luhn 10 compliant
+
+    /** TROY kartlar için türkçe karakter validation devre dışı bırakma */
+    if (cardType.type === 'unionpay' || cardType.type.toLowerCase() === 'Troy') {
         valid = true;
     } else {
         valid = luhn10(value);

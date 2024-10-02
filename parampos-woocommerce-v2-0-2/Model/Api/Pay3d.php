@@ -30,6 +30,8 @@ class Pay3d extends Client
             )
         ];
         $client = new \SoapClient($this->serviceUrl, $options);
+
+        $currency = get_option('woocommerce_currency');
         global $WOOCS;
         $currency = get_option('woocommerce_currency');
         if($currency == 'USD' || $currency == 'EUR' || $WOOCS->current_currency == 'EUR' || $WOOCS->current_currency == 'USD')
@@ -47,7 +49,7 @@ class Pay3d extends Client
             $sha2B64->G->CLIENT_USERNAME = $this->clientUsername;
             $sha2B64->G->CLIENT_PASSWORD = $this->clientPassword;
             $saleObj->Islem_Hash = $client->SHA2B64($sha2B64)->SHA2B64Result;
-            
+
             $this->response = $client->TP_Islem_Odeme_WD($saleObj);
         } else
         {

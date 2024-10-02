@@ -78,9 +78,10 @@ class Data
 			'message' => '',
 			'error' => false
 		];
+
 		if(!isset($data['TURKPOS_RETVAL_Sonuc']) || (isset($data['TURKPOS_RETVAL_Sonuc']) && intval($data['TURKPOS_RETVAL_Sonuc']) < 1)) {
 			$message['error'] = true;
-			$message['message'] = $data['TURKPOS_RETVAL_Sonuc_Str'];
+			$message['message'] = isset($data['TURKPOS_RETVAL_Sonuc_Str'])?$data['TURKPOS_RETVAL_Sonuc_Str']:"";
             return $message;
 		}
 
