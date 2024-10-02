@@ -101,7 +101,7 @@ class ModelExtensionPaymentParam extends Model {
 	 */
 	public function getApiUrl() {
 		if ($this->config->get('payment_param_test')) {
-			$url = 'https://test-dmz.param.com.tr:4443/turkpos.ws/service_turkpos_test.asmx?wsdl';
+			$url = 'https://test-dmz.param.com.tr/turkpos.ws/service_turkpos_test.asmx?wsdl';
 		} else {
 			$wsdlPath = DIR_SYSTEM . '/library/turkpos/ParamPOSApi.wsdl';
 			if(file_exists($wsdlPath))
@@ -207,33 +207,41 @@ class ModelExtensionPaymentParam extends Model {
 		
 		$request->BIN = (strlen($request->BIN) >= 6)?substr($request->BIN, 0, 6):'';
 		$posId = $this->getBinPOS($request);
-		
-		unset($request->BIN);
-		$request->GUID = $this->config->get('payment_param_guid');
-		
-		$quoteResponse = $this->getBinQuote($request);
-		$installment = [];
-		if($quoteResponse){
-			foreach ($quoteResponse as $key => $resp) {
-				if ($resp[0]["SanalPOS_ID"] == $posId['posId']) { 
-					$installmentIndex = 12;
-					for($i = 1; $i <= $installmentIndex; $i++) {
-						$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
-						$rate = $resp[0]["MO_$prerate"];
-						if(floatval($rate) < 0)
-					        continue;
+		$installmentIndex = ($posId['cardType'] === "Debit Kart" || $posId['cardType'] === "Debit Card" || $posId['cardType'] === "Prepaid Card") ? 1 : 12;
+		if (isset($posId->Sonuc) && $posId->Sonuc === "-101") {
+			$installment = json_encode([
+				"error" => true,
+				"posId" => $posId
+			]);
+			return $installment;
+		} else {
+			unset($request->BIN);
+			$request->GUID = $this->config->get('payment_param_guid');
+			$quoteResponse = $this->getBinQuote($request);
+			$installment = [];
+			if($quoteResponse){
+				foreach ($quoteResponse as $key => $resp) 
+				{
+					if ($resp[0]["SanalPOS_ID"] == $posId['posId']) { 
+						//$installmentIndex = 12;
+						for($i = 1; $i <= $installmentIndex; $i++) {
+							$prerate = str_pad($i, 2, '0', STR_PAD_LEFT);
+							$rate = $resp[0]["MO_$prerate"];
+							if(floatval($rate) < 0)
+								continue;
 
-                        $amount = (float) (1 + ($rate / 100)) *  $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
-                        $fee = (float) ($rate / 100) * $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
-						$installment[$i]['month'] = $prerate;
-						$installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
-						$installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $order_info['currency_code'];
-						$installment[$i]['fee'] = number_format($fee, 2);
+							$amount = (float) (1 + ($rate / 100)) *  $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
+							$fee = (float) ($rate / 100) * $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
+							$installment[$i]['month'] = $prerate;
+							$installment[$i]['rate'] = number_format($resp[0]["MO_$prerate"], 2);
+							$installment[$i]['total_pay'] = number_format($amount, 2) . ' ' . $order_info['currency_code'];
+							$installment[$i]['fee'] = number_format($fee, 2);
+						}
 					}
 				}
 			}
+			return json_encode($installment);
 		}
-		return json_encode($installment);
 	}
 
 	/**
@@ -249,26 +257,31 @@ class ModelExtensionPaymentParam extends Model {
 		{
 			$binResponse = [];
 			$q1 = $response->BIN_SanalPosResult;
-			$DT_Bilgi = $q1->{'DT_Bilgi'};
-			$Sonuc = $q1->{'Sonuc'};
-			$Sonuc_Str = $q1->{'Sonuc_Str'};
-			$xml = $DT_Bilgi->{'any'};
-			$xmlStr = '<?xml version=\'1.0\' standalone=\'yes\'?><root>'.$xml.'</root>';
-			$xmlStr = str_replace(array("diffgr:","msdata:"),'', $xmlStr);
-			$data = @simplexml_load_string($xmlStr);
-			$list = $data->diffgram->NewDataSet;
-			foreach ($list->Temp as $card){
-				$card = (array)$card;
-				$binResponse[] = [
-					'bin' => $card['BIN'],
-					'posId' => $card['SanalPOS_ID'],
-					'posName' => $card['Kart_Banka'],
-				];
-				if($request->BIN != ''){
-					return $binResponse[0];
+			if ($q1->{'Sonuc'} == "-101") {
+				$binResponse = $q1;
+				return $q1;
+			} else {
+				$DT_Bilgi = $q1->{'DT_Bilgi'};
+				$Sonuc = $q1->{'Sonuc'};
+				$Sonuc_Str = $q1->{'Sonuc_Str'};
+				$xml = $DT_Bilgi->{'any'};
+				$xmlStr = '<?xml version=\'1.0\' standalone=\'yes\'?><root>'.$xml.'</root>';
+				$xmlStr = str_replace(array("diffgr:","msdata:"),'', $xmlStr);
+				$data = @simplexml_load_string($xmlStr);
+				$list = $data->diffgram->NewDataSet;
+				foreach ($list->Temp as $card){
+					$card = (array)$card;
+					$binResponse[] = [
+						'bin' => $card['BIN'],
+						'posId' => $card['SanalPOS_ID'],
+						'posName' => $card['Kart_Banka'],
+						'cardType' => $card['Kart_Tip'] //Debit Card'lara tek taksit göstermek için eklendi.
+					];
+					if($request->BIN != ''){
+						return $binResponse[0];
+					}
 				}
 			}
-
 			return $binResponse;
 		}
 
