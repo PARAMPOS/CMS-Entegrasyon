@@ -253,6 +253,10 @@ class ModelExtensionPaymentParam extends Model {
 	private function getBinPOS($request){
 		$client = $this->_createSoapClient($this->getApiUrl(), 0);
         $response = $client->BIN_SanalPos($request);
+		if ($response->BIN_SanalPosResult->Sonuc == "-101") {
+			$this->session->data['error'] = $response->BIN_SanalPosResult->Sonuc_Str;
+			$this->response->redirect($this->url->link('checkout/checkout', '', true));
+		}
 		if(isset($response->BIN_SanalPosResult))
 		{
 			$binResponse = [];

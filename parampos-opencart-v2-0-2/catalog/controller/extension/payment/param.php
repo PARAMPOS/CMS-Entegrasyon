@@ -1,7 +1,7 @@
 <?php
 class ControllerExtensionPaymentParam extends Controller
 {
-	private $version = "2.0.1";
+	private $version = "2.0.2";
 	public function index()
 	{
 		$this->load->language('extension/payment/param');
