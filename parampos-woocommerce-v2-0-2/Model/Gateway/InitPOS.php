@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
 class InitPOS
 {
-    public $version = "2.0.1";
+    public $version = "2.0.2";
     public function pay($transaction)
     {
         $transaction->tds = true;

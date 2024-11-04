@@ -1,12 +1,12 @@
-<?php
+﻿<?php
     /*
      * Plugin Name: Param POS Payment Gateway
      * Plugin URI: https://param.com.tr
      * Description: Take credit card payments on your store.
      * Author: Param POS
      * Author URI: https://param.com.tr
-     * Version: 2.0.1
-     * Update Time: 09 Temmuz 2024
+     * Version: 2.0.2
+     * Update Time: 04 Kasım 2024
      */
     ini_set("default_socket_timeout", 6000);
     ini_set('session.cookie_samesite', 'Lax');
@@ -78,7 +78,7 @@
                 $this->id = 'param'; // payment gateway plugin ID
                 $this->icon = ''; // URL of the icon that will be displayed on checkout page near your gateway name
                 $this->has_fields = true; // in case you need a custom credit card form
-                $this->method_title = 'Param POS Payment Gateway - v2.0.1';
+                $this->method_title = 'Param POS Payment Gateway - v2.0.2';
                 $this->method_description = 'Param POS Payment Gateway'; // will be displayed on the options page
 
                 // gateways can support subscriptions, refunds, saved payment methods,
