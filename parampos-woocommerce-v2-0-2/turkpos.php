@@ -1,12 +1,12 @@
-﻿<?php
-    /*
+<?php
+    /* 
      * Plugin Name: Param POS Payment Gateway
      * Plugin URI: https://param.com.tr
      * Description: Take credit card payments on your store.
      * Author: Param POS
      * Author URI: https://param.com.tr
-     * Version: 2.0.2
-     * Update Time: 04 Kasım 2024
+     * Version: 2.0.3
+     * Update Time: 07 Kasım 2024
      */
     ini_set("default_socket_timeout", 6000);
     ini_set('session.cookie_samesite', 'Lax');

@@ -1,8 +1,8 @@
-﻿<?php
+<?php
 
 class InitPOS
 {
-    public $version = "2.0.2";
+    public $version = "2.0.3";
     public function pay($transaction)
     {
         $transaction->tds = true;
@@ -31,7 +31,7 @@ class InitPOS
             }
         }
 
-        /**
+        /** 
          * $transaction->rate = Kullanıcıdan gelen taksit oranı
          * $rate = Param Servislerinden gelen taksit oranı
          * Param Servislerinden dönen taksit oranıyla kullanıcıdan gelen taksit oranı eşit değilse hata döner.
