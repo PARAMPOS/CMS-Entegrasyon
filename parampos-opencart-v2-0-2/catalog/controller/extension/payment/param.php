@@ -116,14 +116,14 @@ class ControllerExtensionPaymentParam extends Controller
 				$result->Basarili_URL = $this->url->link('extension/payment/param/callback', '', true);
 				$result->Siparis_ID = $Siparis_ID;
 				$result->Siparis_Aciklama = date("d-m-Y H:i:s") . " tarihindeki ödeme";
-
-				$installment = explode('|', ($this->request->post['PARAM_INSTALLMENT']));
-				if (count($installment) != 3) {
-					$this->session->data['error'] = "Hatalı İstek Gönderildi. Error Message Explode";
-					$this->response->redirect($this->url->link('checkout/checkout', '', true));
-				}
-
+			
 				if (isset($this->request->post['PARAM_INSTALLMENT'])) {
+					$installment = explode('|', ($this->request->post['PARAM_INSTALLMENT']));
+					if (count($installment) != 3) {
+						$this->session->data['error'] = "Hatalı İstek Gönderildi. Error Message Explode";
+						$this->response->redirect($this->url->link('checkout/checkout', '', true));
+					}
+		
 					$checkInstalment = $this->checkInstalment($this->request->post['PARAM_CARDNUMBER']);
 					$checkInstalment = $checkInstalment[$installment[0]];
 					if ($checkInstalment['rate'] !== $installment[1] || $checkInstalment['fee'] !== $installment[2]) {
