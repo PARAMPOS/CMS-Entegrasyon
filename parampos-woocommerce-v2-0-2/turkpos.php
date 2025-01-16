@@ -1,5 +1,5 @@
 <?php
-    /* 
+    /*
      * Plugin Name: Param POS Payment Gateway
      * Plugin URI: https://param.com.tr
      * Description: Take credit card payments on your store.

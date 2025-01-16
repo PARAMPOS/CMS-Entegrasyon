@@ -23,15 +23,19 @@ class InitPOS
         $response = $cc->send()->fetchInstallment();
 
         $prerate = str_pad($transaction->installment, 2, '0', STR_PAD_LEFT);
-        /** BU ALANA RESPONSE VEYA IP HATASI DÖNÜYOR BURADA İP HATASI KONTROLÜ YAP RESPONSE DEĞERİ BOŞ GELİYOR. */
-
+        if (isset($response['Sonuc']) && $response['Sonuc'] == -101) {
+            $transaction->resultCode = 'IP - ENT - "400"';
+            $transaction->resultMessage = " - " . $response['Sonuc_Str'];
+            $transaction->result = false;
+            return $transaction;
+        }
         foreach ($response as $key => $resp) {
             if ($resp[0]["SanalPOS_ID"] == $posId) {
                 $rate = $resp[0]["MO_$prerate"];
             }
         }
 
-        /** 
+        /**
          * $transaction->rate = Kullanıcıdan gelen taksit oranı
          * $rate = Param Servislerinden gelen taksit oranı
          * Param Servislerinden dönen taksit oranıyla kullanıcıdan gelen taksit oranı eşit değilse hata döner.
